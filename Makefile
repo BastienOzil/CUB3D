@@ -29,7 +29,7 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MLX) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT)  $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT)  $(MLXobjs_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
