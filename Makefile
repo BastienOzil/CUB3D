@@ -2,56 +2,61 @@
 
 NAME = cub3D
 
-CC = gcc
+CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRC_DIR = srcs
 
-OBJS_DIR = objs
+OBJ_DIR = objs
 
 MLX_DIR = minilibx-linux
 
 LIBFT_DIR = libft
 
-SRCS = $(SRC_DIR)/main.c
+SRCS = $(SRC_DIR)/main.c \
+       $(SRC_DIR)/parse_map.c \
+       $(SRC_DIR)/check_map.c
 
-OBJS     = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 MLX = $(MLX_DIR)/libmlx_Linux.a
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-OBJS = $(SRCS:.c=.o)
-
 MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
+
+INCLUDES = -I./includes -I$(MLX_DIR) -I$(LIBFT_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT)  $(MLXobjs_FLAGS) -o $(NAME)
+$(NAME): $(MLX) $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	@echo "✅ cub3D compiled successfully!"
 
 $(LIBFT):
+	@echo "📚 Compiling libft..."
 	make -C $(LIBFT_DIR)
 
 $(MLX):
+	@echo "🖼️  Compiling minilibx..."
 	make -C $(MLX_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-%.o: %.c
-	$(CC) $(CFLAGS) -I$(MLX_DIR) -I$(LIBFT_DIR) -c $< -o $@
+	@echo "🔨 Compiling $<"
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	@echo "🧹 Cleaning object files..."
+	rm -rf $(OBJ_DIR)
 	make clean -C $(LIBFT_DIR)
 	make clean -C $(MLX_DIR)
 
 fclean: clean
+	@echo "🗑️  Removing executable..."
 	rm -f $(NAME)
 	make fclean -C $(LIBFT_DIR)
 
