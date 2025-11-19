@@ -16,6 +16,8 @@ LIBFT_DIR = libft
 
 SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/parse_map.c \
+       $(SRC_DIR)/parse_texture.c \
+       $(SRC_DIR)/parse_texture_utils.c \
        $(SRC_DIR)/check_map.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

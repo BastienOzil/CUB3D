@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:57:09 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/19 19:07:17 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/19 20:44:22 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static int	process_line(char *line, t_game *game, int *map_started)
 		*map_started = 1;
 	if (!*map_started)
 	{
-		if (!parse_texture_line(trimmed, game) && !parse_color_line(trimmed,
-				game))
+		if (!parse_texture_line(trimmed, game)
+			&& !parse_color_line(trimmed, game))
 		{
 			free(trimmed);
 			return (0);
@@ -72,12 +72,27 @@ static int	process_line(char *line, t_game *game, int *map_started)
 	return (1);
 }
 
+static int	parse_lines(char **lines, t_game *game, int *map_started)
+{
+	int	i;
+
+	i = 0;
+	while (lines[i] && !*map_started)
+	{
+		if (!process_line(lines[i], game, map_started))
+			return (0);
+		i++;
+	}
+	if (!parse_map_grid(lines, game, i - 1))
+		return (0);
+	return (i);
+}
+
 int	parse_file(const char *file, t_game *game)
 {
 	int		fd;
 	char	*content;
 	char	**lines;
-	int		i;
 	int		map_started;
 
 	if (!is_valid_extension(file))
@@ -93,18 +108,8 @@ int	parse_file(const char *file, t_game *game)
 	free(content);
 	if (!lines)
 		return (0);
-	i = 0;
 	map_started = 0;
-	while (lines[i] && !map_started)
-	{
-		if (!process_line(lines[i], game, &map_started))
-		{
-			free_split(lines);
-			return (0);
-		}
-		i++;
-	}
-	if (!parse_map_grid(lines, game, i - 1))
+	if (!parse_lines(lines, game, &map_started))
 	{
 		free_split(lines);
 		return (0);
