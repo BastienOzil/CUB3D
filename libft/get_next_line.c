@@ -6,13 +6,12 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:07:20 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 19:14:28 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/19 19:18:53 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/* Extract the line from the static buffer */
 static char	*extract_line(char **res)
 {
 	char	*line;
@@ -35,7 +34,6 @@ static char	*extract_line(char **res)
 	return (line);
 }
 
-/* Read from file descriptor and update buffer */
 static char	*read_buffer(int fd, char *res)
 {
 	char	*buffer;

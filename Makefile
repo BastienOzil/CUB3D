@@ -32,31 +32,25 @@ all: $(NAME)
 
 $(NAME): $(MLX) $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
-	@echo "✅ cub3D compiled successfully!"
 
 $(LIBFT):
-	@echo "📚 Compiling libft..."
 	make -C $(LIBFT_DIR)
 
 $(MLX):
-	@echo "🖼️  Compiling minilibx..."
 	make -C $(MLX_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@echo "🔨 Compiling $<"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	@echo "🧹 Cleaning object files..."
 	rm -rf $(OBJ_DIR)
 	make clean -C $(LIBFT_DIR)
 	make clean -C $(MLX_DIR)
 
 fclean: clean
-	@echo "🗑️  Removing executable..."
 	rm -f $(NAME)
 	make fclean -C $(LIBFT_DIR)
 

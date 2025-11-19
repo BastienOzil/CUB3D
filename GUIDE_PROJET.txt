@@ -1,0 +1,370 @@
+================================================================================
+                    GUIDE POUR TERMINER LE PROJET CUB3D
+================================================================================
+
+OBJECTIF DU PROJET :
+--------------------
+Créer une représentation graphique 3D réaliste de l'intérieur d'un labyrinthe 
+en vue à la première personne, en utilisant le principe du ray-casting avec la 
+bibliothèque MiniLibX.
+
+================================================================================
+ÉTAPE 1 : COMPLÉTER LE PARSING DU FICHIER .CUB
+================================================================================
+
+A. Fonctions à créer/compléter dans parse_map.c ou nouveau fichier :
+   
+   1. parse_texture_line() - Parser les lignes de textures (NO, SO, WE, EA)
+      • Vérifier l'identifiant (NO/SO/WE/EA)
+      • Extraire le chemin du fichier texture
+      • Stocker dans game->texture.north/south/west/east
+   
+   2. parse_color_line() - Parser les couleurs (F et C)
+      • Vérifier l'identifiant (F ou C)
+      • Parser les valeurs R,G,B séparées par des virgules
+      • Vérifier que les valeurs sont entre 0 et 255
+      • Convertir en format hexadécimal et stocker dans game->floor ou ceiling
+   
+   3. parse_map_grid() - Parser la grille de la map
+      • Trouver où commence la map (après les textures et couleurs)
+      • Allouer et remplir game->map.grid[]
+      • Calculer game->map.width et game->map.height
+      • Garder les espaces tels quels (font partie de la map)
+
+B. Fonctions utilitaires à créer :
+   
+   • ft_strtrim_whitespace() - Enlever les espaces au début/fin d'une ligne
+   • create_rgb() - Convertir R,G,B en format hexadécimal (R << 16 | G << 8 | B)
+   • free_split() - Libérer un tableau de chaînes
+
+
+================================================================================
+ÉTAPE 2 : VALIDATION COMPLÈTE DE LA MAP
+================================================================================
+
+A. Compléter check_map.c :
+   
+   1. validate_map_walls() - Vérifier que la map est fermée
+      • Vérifier que tous les '0' et positions joueur sont entourés de murs
+      • Vérifier les bords de la map
+      • Utiliser un algorithme de flood-fill ou vérifier chaque cellule
+      • Les espaces peuvent être problématiques aux bords
+   
+   2. Vérifications à faire :
+      • Un seul joueur (N, S, E, ou W)
+      • Caractères valides uniquement (0, 1, N, S, E, W, espaces)
+      • Map rectangulaire (compléter avec espaces si nécessaire)
+      • Pas de trous dans les murs
+
+
+================================================================================
+ÉTAPE 3 : INITIALISATION DU JEU ET DES TEXTURES
+================================================================================
+
+A. Créer un fichier init_game.c avec :
+   
+   1. init_game() - Initialiser la structure game
+      • Mettre tous les pointeurs à NULL
+      • Initialiser les couleurs à -1
+      • Initialiser les dimensions d'écran
+   
+   2. init_player() - Initialiser la position et direction du joueur
+      • game->player.pos_x = game->map.player_x + 0.5
+      • game->player.pos_y = game->map.player_y + 0.5
+      • Selon player_dir (N/S/E/W), définir dir_x, dir_y
+      • Définir le plan de la caméra (plane_x, plane_y) perpendiculaire à dir
+      
+      Exemple pour 'N' (Nord) :
+        dir_x = 0, dir_y = -1
+        plane_x = 0.66, plane_y = 0
+   
+   3. load_textures() - Charger les textures depuis les fichiers
+      • Utiliser mlx_xpm_file_to_image() pour chaque texture
+      • Stocker dans game->texture.tex[0..3] (N, S, E, W)
+      • Récupérer l'adresse avec mlx_get_data_addr()
+      • Vérifier que les fichiers existent
+
+
+================================================================================
+ÉTAPE 4 : INITIALISATION DE LA FENÊTRE MLX
+================================================================================
+
+A. Créer un fichier start_game.c avec :
+   
+   1. start_game() - Démarrer le jeu avec MiniLibX
+      • game->mlx = mlx_init()
+      • game->win = mlx_new_window(mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D")
+      • Créer l'image principale : mlx_new_image()
+      • load_textures()
+      • Définir les hooks (événements) :
+        - mlx_hook() pour la fermeture de fenêtre (X rouge)
+        - mlx_key_hook() ou mlx_hook() pour les touches
+        - mlx_loop_hook() pour le rendu continu
+      • mlx_loop(game->mlx)
+
+
+================================================================================
+ÉTAPE 5 : IMPLÉMENTER LE RAY-CASTING (COEUR DU PROJET)
+================================================================================
+
+A. Créer un fichier raycasting.c avec :
+   
+   1. raycasting() - Fonction principale du ray-casting
+      • Boucle pour chaque colonne x de l'écran (0 à SCREEN_WIDTH)
+      • Pour chaque x :
+        a) init_ray() - Initialiser le rayon
+        b) perform_dda() - Algorithme DDA pour trouver le mur
+        c) calculate_wall_distance() - Calculer la distance perpendiculaire
+        d) draw_vertical_line() - Dessiner la ligne verticale texturée
+   
+   2. init_ray() - Initialiser les variables du rayon pour la colonne x
+      • camera_x = 2 * x / (double)SCREEN_WIDTH - 1
+      • ray_dir_x = player.dir_x + player.plane_x * camera_x
+      • ray_dir_y = player.dir_y + player.plane_y * camera_x
+      • map_x = (int)player.pos_x
+      • map_y = (int)player.pos_y
+      • Calculer delta_dist_x et delta_dist_y
+      • Déterminer step_x, step_y et side_dist initiales
+   
+   3. perform_dda() - Algorithme Digital Differential Analysis
+      • Boucle while (!hit) :
+        - Avancer dans la grille (map_x ou map_y selon side_dist)
+        - Vérifier si on touche un mur (map.grid[map_y][map_x] == '1')
+        - Enregistrer quel côté du mur est touché (side = 0 ou 1)
+   
+   4. calculate_wall_distance() - Calculer la distance au mur
+      • Si side == 0 : perp_wall_dist = (map_x - pos_x + (1-step_x)/2) / ray_dir_x
+      • Si side == 1 : perp_wall_dist = (map_y - pos_y + (1-step_y)/2) / ray_dir_y
+      • Calculer line_height = (int)(SCREEN_HEIGHT / perp_wall_dist)
+      • Calculer draw_start et draw_end
+   
+   5. draw_vertical_line() - Dessiner une ligne de texture
+      • Déterminer quelle texture utiliser (N/S/E/W selon side et step)
+      • Calculer wallX (où exactement le mur a été touché)
+      • Calculer tex_x (colonne de la texture à utiliser)
+      • Boucle pour chaque pixel vertical :
+        - Calculer tex_y (ligne de la texture)
+        - Récupérer la couleur du pixel de la texture
+        - Mettre le pixel dans l'image avec mlx_pixel_put ou directement dans img.addr
+      • Dessiner le sol et le plafond pour cette colonne
+
+
+================================================================================
+ÉTAPE 6 : GESTION DES COULEURS SOL/PLAFOND
+================================================================================
+
+A. Dans draw_vertical_line() ou fonction séparée :
+   
+   1. Dessiner le plafond :
+      • De y=0 à y=draw_start : couleur game->ceiling.hex
+   
+   2. Dessiner le sol :
+      • De y=draw_end à y=SCREEN_HEIGHT : couleur game->floor.hex
+
+
+================================================================================
+ÉTAPE 7 : CONTRÔLES CLAVIER
+================================================================================
+
+A. Créer un fichier controls.c avec :
+   
+   1. key_press() - Gérer les touches pressées
+      • ESC (keycode 65307) : close_game()
+      • W (keycode 119 ou 13) : move_forward()
+      • S (keycode 115 ou 1) : move_backward()
+      • A (keycode 97 ou 0) : strafe_left() [optionnel]
+      • D (keycode 100 ou 2) : strafe_right() [optionnel]
+      • Flèche gauche : rotate_left()
+      • Flèche droite : rotate_right()
+   
+   2. move_forward() - Avancer dans la direction du regard
+      • new_x = player.pos_x + player.dir_x * MOVE_SPEED
+      • new_y = player.pos_y + player.dir_y * MOVE_SPEED
+      • Vérifier que la nouvelle position n'est pas dans un mur
+      • Si valide : mettre à jour pos_x et pos_y
+   
+   3. move_backward() - Reculer
+      • Même logique mais soustraire au lieu d'ajouter
+   
+   4. rotate_left() - Rotation à gauche
+      • Faire tourner dir_x, dir_y avec matrice de rotation
+      • Faire tourner plane_x, plane_y aussi
+      • Angle = -ROT_SPEED
+   
+   5. rotate_right() - Rotation à droite
+      • Angle = +ROT_SPEED
+   
+   6. close_game() - Fermer proprement le jeu
+      • Détruire les textures et images
+      • Détruire la fenêtre
+      • free_game()
+      • exit(0)
+
+
+================================================================================
+ÉTAPE 8 : RENDU EN BOUCLE
+================================================================================
+
+A. Créer une fonction render_frame() :
+   
+   1. Effacer l'image précédente (ou créer nouvelle image)
+   2. Appeler raycasting() pour dessiner la scène
+   3. mlx_put_image_to_window() pour afficher l'image
+   4. Retourner 0 pour continuer la boucle
+
+
+================================================================================
+ÉTAPE 9 : GESTION DE LA MÉMOIRE
+================================================================================
+
+A. Créer un fichier cleanup.c avec :
+   
+   1. free_game() - Libérer toutes les ressources
+      • free_map()
+      • Libérer les chemins de textures
+      • Détruire les images MLX si créées
+      • Libérer game->mlx si créé
+   
+   2. free_map() - Libérer la grille de la map
+      • Boucle pour libérer chaque ligne
+      • Libérer le tableau principal
+
+
+================================================================================
+ÉTAPE 10 : GESTION DES ERREURS
+================================================================================
+
+A. Créer un fichier error.c avec :
+   
+   1. ft_error() - Afficher un message d'erreur
+      • Afficher "Error\n" sur stderr
+      • Afficher le message spécifique
+      • Retourner 1 (code d'erreur)
+   
+   2. Cas d'erreurs à gérer :
+      • Mauvais nombre d'arguments
+      • Fichier .cub non trouvé
+      • Extension invalide
+      • Textures non trouvées
+      • Couleurs invalides (hors range 0-255)
+      • Map invalide (non fermée, plusieurs joueurs, etc.)
+      • Allocation mémoire échouée
+      • Initialisation MLX échouée
+
+
+================================================================================
+ÉTAPE 11 : TESTS ET DÉBOGAGE
+================================================================================
+
+1. Tester avec différentes maps :
+   • Map simple (comme dans l'exemple)
+   • Map avec espaces
+   • Map complexe
+   • Maps invalides (pour tester la gestion d'erreurs)
+
+2. Vérifier :
+   • Les textures s'affichent correctement sur chaque côté
+   • Les couleurs sol/plafond sont bonnes
+   • Les déplacements sont fluides
+   • Les rotations fonctionnent
+   • ESC et X rouge ferment proprement
+   • Pas de fuites mémoire (valgrind)
+
+3. Utiliser des outils :
+   • valgrind --leak-check=full ./cub3D maps/map.cub
+   • Afficher des printf pour déboguer le ray-casting
+
+
+================================================================================
+ORDRE D'IMPLÉMENTATION RECOMMANDÉ
+================================================================================
+
+1. ✅ PARSING : Terminer parse_texture_line(), parse_color_line(), parse_map_grid()
+2. ✅ VALIDATION : Terminer validate_map_walls()
+3. ✅ INIT : Implémenter init_game(), init_player(), load_textures()
+4. ✅ MLX : Implémenter start_game() (fenêtre de base)
+5. ✅ RAY-CASTING : Implémenter l'algorithme complet (étape la plus complexe)
+6. ✅ AFFICHAGE : Dessiner murs, sol, plafond avec textures
+7. ✅ CONTROLES : Implémenter déplacements et rotations
+8. ✅ CLEANUP : Implémenter free_game() et gestion erreurs
+9. ✅ TESTS : Tester et corriger les bugs
+
+
+================================================================================
+FICHIERS À CRÉER/COMPLÉTER
+================================================================================
+
+Fichiers existants à compléter :
+- srcs/parse_map.c (compléter les fonctions manquantes)
+- srcs/check_map.c (ajouter validate_map_walls)
+- srcs/main.c (déjà bon)
+
+Nouveaux fichiers à créer dans srcs/ :
+- parse_texture.c (parse_texture_line, parse_color_line)
+- parse_utils.c (ft_strtrim_whitespace, create_rgb, etc.)
+- init_game.c (init_game, init_player)
+- load_textures.c (load_textures)
+- start_game.c (start_game, render_frame)
+- raycasting.c (raycasting, init_ray, perform_dda, etc.)
+- draw.c (draw_vertical_line, fonctions de dessin)
+- controls.c (key_press, move_forward, rotate_left, etc.)
+- cleanup.c (free_game, free_map)
+- error.c (ft_error)
+
+N'oublie pas de mettre à jour le Makefile avec tous les nouveaux fichiers !
+
+
+================================================================================
+RESSOURCES UTILES
+================================================================================
+
+1. Tutoriels Ray-Casting :
+   - https://lodev.org/cgtutor/raycasting.html (EXCELLENT tutoriel, très détaillé)
+   - Ce tutoriel explique tout l'algorithme étape par étape
+
+2. Documentation MiniLibX :
+   - Voir les man pages dans minilibx-linux/
+   - Fonctions principales : mlx_init, mlx_new_window, mlx_new_image,
+     mlx_get_data_addr, mlx_put_image_to_window, mlx_hook, mlx_loop
+
+3. Concepts mathématiques :
+   - Vecteurs 2D (position, direction)
+   - Rotation de vecteurs (matrice de rotation)
+   - DDA (Digital Differential Analysis)
+   - Distance perpendiculaire (pour éviter l'effet fish-eye)
+
+
+================================================================================
+CONSEILS IMPORTANTS
+================================================================================
+
+• Avance étape par étape, teste chaque partie avant de passer à la suivante
+• Le ray-casting est la partie la plus complexe, prends ton temps
+• Utilise des printf pour afficher les valeurs et comprendre ce qui se passe
+• Commence avec une map simple pour déboguer
+• Vérifie les fuites mémoire régulièrement avec valgrind
+• Gère les erreurs à chaque allocation et ouverture de fichier
+• Teste avec des maps invalides pour vérifier ta gestion d'erreurs
+• N'hésite pas à dessiner des schémas pour comprendre le ray-casting
+
+
+================================================================================
+BONUS (à faire SEULEMENT si la partie obligatoire est parfaite)
+================================================================================
+
+1. Collisions avec les murs (vérifier dans move_forward/backward)
+2. Minimap système (afficher une petite carte en haut)
+3. Portes qui s'ouvrent/ferment (nouveau caractère dans la map)
+4. Sprites animés (ennemis, objets)
+5. Rotation avec la souris (mlx_mouse_move)
+
+
+================================================================================
+BON COURAGE ! 🚀
+================================================================================
+
+Si tu suis ces étapes dans l'ordre, ton projet sera terminé progressivement.
+Commence par le parsing, puis la validation, puis l'initialisation, et enfin
+le ray-casting qui est le cœur du projet.
+
+N'oublie pas : teste après chaque étape importante !
