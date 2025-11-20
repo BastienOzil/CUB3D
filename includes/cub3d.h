@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 20:53:37 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/20 00:12:42 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,33 @@ void			clean_path(char *path);
 void			store_texture(t_game *game, int type, char *texture_path);
 
 // parse_texture_utils
-int				is_space(char c);
 int				get_texture_type(char *line, int *i);
 int				check_duplicate(t_game *game, int type);
 void			store_texture(t_game *game, int type, char *texture_path);
 void			clean_path(char *path);
+
+// parse_color
+int				parse_color_line(char *line, t_game *game);
+
+// parse_color_utils
+int				get_color_type(char *line, int *i);
+int				validate_rgb_range(int r, int g, int b);
+int				check_color_duplicate(t_game *game, int type);
+void			store_color(t_game *game, int type, int r, int g, int b);
+char			**split_rgb_values(char *rgb_str);
+
+// utils
+int				is_space(char c);
+void			free_split(char **split);
+char			*ft_strtrim_whitespace(char *str);
+
+// parse_grid
+int				parse_map_grid(char **lines, t_game *game, int start_index);
+
+// parse_grid_utils
+int				is_empty_line(char *line);
+int				allocate_map_grid(t_game *game);
+int				fill_map_grid(char **lines, t_game *game, int start);
 
 // check_map
 int				check_map(t_game *game);
