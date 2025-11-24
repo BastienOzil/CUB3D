@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 23:52:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/20 00:12:42 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:31 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Parse la grille de la map: localise le début, calcule les dimensions, 
+ * alloue la mémoire et remplit en gérant les maps rectangulaires.
+ */
 
 #include "../includes/cub3d.h"
 
@@ -16,6 +21,8 @@ static int	find_map_start(char **lines, int start_index)
 {
 	int	i;
 
+	if (start_index < 0)
+		start_index = 0;
 	i = start_index;
 	while (lines[i])
 	{

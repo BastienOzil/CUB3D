@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 11:48:45 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:38:47 by bozil            ###   ########.fr       */
+/*   Created: 2025/11/24 13:37:28 by bozil             #+#    #+#             */
+/*   Updated: 2025/11/24 13:37:31 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putptr(void *ptr)
+int	ft_putchar(char c)
 {
-	unsigned long	n;
-	int				count;
-
-	n = (unsigned long)ptr;
-	if (n == 0)
-		return (write(1, "(nil)", 5));
-	count = 0;
-	count += ft_putstr("0x");
-	count += ft_puthex(n, 0);
-	return (count);
+	write(1, &c, 1);
+	return (1);
 }

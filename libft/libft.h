@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:52:11 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 19:11:37 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 10:02:14 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,16 @@ char				*ft_strnstr(const char *big, const char *little,
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
+
+// more
 char				**ft_split(char const *str, char c);
 char				*get_next_line(int fd);
+int					ft_printf(const char *format, ...);
+int					ft_putchar(char c);
+int					ft_putstr(char *s);
+int					ft_putnbr(int n);
+int					ft_putnbr_unsigned(unsigned int n);
+int					ft_puthex(unsigned long n, int uppercase);
+int					ft_putptr(void *ptr);
 
 #endif

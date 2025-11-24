@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 23:34:13 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 23:43:33 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:27 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Parse les couleurs F/C: extrait les valeurs RGB, valide (0-255), 
+ * convertit en hexa et stocke dans game.
+ */
 
 #include "../includes/cub3d.h"
 

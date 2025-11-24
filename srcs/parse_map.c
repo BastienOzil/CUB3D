@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:57:09 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/19 20:44:22 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:32 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Lit et parse le fichier .cub: vérifie l'extension, lit le contenu, 
+ * identifie les textures/couleurs et la grille de la map.
+ */
 
 #include "../includes/cub3d.h"
 
@@ -26,23 +31,29 @@ static int	is_valid_extension(const char *filename)
 
 static char	*read_file_content(int fd)
 {
-	char	*line;
+	char	buffer[4096];
 	char	*content;
 	char	*tmp;
+	int		bytes_read;
 
 	content = ft_strdup("");
 	if (!content)
 		return (NULL);
-	line = get_next_line(fd);
-	while (line)
+	bytes_read = read(fd, buffer, 4095);
+	while (bytes_read > 0)
 	{
-		tmp = ft_strjoin(content, line);
+		buffer[bytes_read] = '\0';
+		tmp = ft_strjoin(content, buffer);
 		free(content);
-		free(line);
 		if (!tmp)
 			return (NULL);
 		content = tmp;
-		line = get_next_line(fd);
+		bytes_read = read(fd, buffer, 4095);
+	}
+	if (bytes_read < 0)
+	{
+		free(content);
+		return (NULL);
 	}
 	return (content);
 }
@@ -61,8 +72,8 @@ static int	process_line(char *line, t_game *game, int *map_started)
 		*map_started = 1;
 	if (!*map_started)
 	{
-		if (!parse_texture_line(trimmed, game)
-			&& !parse_color_line(trimmed, game))
+		if (parse_texture_line(trimmed, game)
+			&& parse_color_line(trimmed, game))
 		{
 			free(trimmed);
 			return (0);

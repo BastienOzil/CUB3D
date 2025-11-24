@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 15:21:12 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/19 19:07:11 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:15 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Valide la configuration: vérifie textures/couleurs présentes, grille valide,
+ * trouve un unique joueur, valide les caractères et les murs.
+ */
 
 #include "../includes/cub3d.h"
 

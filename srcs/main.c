@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:49:08 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 19:07:14 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:25 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Point d'entrée: vérifie les arguments, parse le .cub, valide la map, 
+ * initialise le joueur et lance le jeu MLX.
+ */
 
 #include "../includes/cub3d.h"
 

@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 23:45:00 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 23:43:33 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:26 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Fonctions utilitaires: identifier le type, valider le range RGB, 
+ * vérifier doublons, convertir et stocker en hexa.
+ */
 
 #include "../includes/cub3d.h"
 

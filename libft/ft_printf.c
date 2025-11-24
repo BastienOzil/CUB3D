@@ -6,11 +6,12 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 11:08:19 by bozil             #+#    #+#             */
-/*   Updated: 2024/11/23 11:47:42 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:37:17 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
+#include <stdarg.h>
 
 static int	short_cut(char specifier, va_list args)
 {

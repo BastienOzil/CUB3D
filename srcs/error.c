@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr.c                                        :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 11:48:45 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:38:47 by bozil            ###   ########.fr       */
+/*   Created: 2025/11/24 10:22:19 by bozil             #+#    #+#             */
+/*   Updated: 2025/11/24 13:40:20 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+/*
+ * Affiche un message d'erreur sur stderr et retourne 1 (code d'erreur).
+ */
 
-int	ft_putptr(void *ptr)
+#include "../includes/cub3d.h"
+
+int	ft_error(char *message)
 {
-	unsigned long	n;
-	int				count;
-
-	n = (unsigned long)ptr;
-	if (n == 0)
-		return (write(1, "(nil)", 5));
-	count = 0;
-	count += ft_putstr("0x");
-	count += ft_puthex(n, 0);
-	return (count);
+	ft_putendl_fd(message, 2);
+	return (1);
 }

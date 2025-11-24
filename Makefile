@@ -14,16 +14,22 @@ MLX_DIR = minilibx-linux
 
 LIBFT_DIR = libft
 
-SRCS = $(SRC_DIR)/main.c \
-       $(SRC_DIR)/parse_map.c \
-       $(SRC_DIR)/parse_texture.c \
-       $(SRC_DIR)/parse_texture_utils.c \
+SRCS = $(SRC_DIR)/check_map.c \
+       $(SRC_DIR)/cleanup.c \
+       $(SRC_DIR)/error.c \
+       $(SRC_DIR)/flood_fill.c \
+       $(SRC_DIR)/init_game.c \
+       $(SRC_DIR)/load_textures.c \
+       $(SRC_DIR)/main.c \
        $(SRC_DIR)/parse_color.c \
        $(SRC_DIR)/parse_color_utils.c \
        $(SRC_DIR)/parse_grid.c \
        $(SRC_DIR)/parse_grid_utils.c \
-       $(SRC_DIR)/utils.c \
-       $(SRC_DIR)/check_map.c
+       $(SRC_DIR)/parse_map.c \
+       $(SRC_DIR)/parse_texture.c \
+       $(SRC_DIR)/parse_texture_utils.c \
+       $(SRC_DIR)/start_game.c \
+       $(SRC_DIR)/utils.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

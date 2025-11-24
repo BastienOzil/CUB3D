@@ -6,9 +6,16 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:40:55 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 23:43:33 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:46 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Ce fichier contient des fonctions helper utilisées partout:
+ * - is_space(): Vérifie si un caractère est un espace blanc (' ', '\t', '\n')
+ * - free_split(): Libère un tableau de chaînes (résultat de ft_split)
+ * - ft_strtrim_whitespace(): Enlève les espaces au début et à la fin
+ */
 
 #include "../includes/cub3d.h"
 

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 11:10:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/11/21 11:10:48 by marvin           ###   ########.fr       */
+/*   Created: 2025/11/24 13:38:10 by bozil             #+#    #+#             */
+/*   Updated: 2025/11/24 13:38:10 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+
+#include "libft.h"
 
 int	ft_puthex(unsigned long n, int uppercase)
 {

@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 19:49:42 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 20:47:00 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:34 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Parse les lignes de textures (NO/SO/WE/EA): identifie le type, extrait 
+ * le chemin .xpm, vérifie l'existence et détecte les doublons.
+ */
 
 #include "../includes/cub3d.h"
 

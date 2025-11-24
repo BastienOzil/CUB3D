@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 00:15:00 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/20 00:12:42 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:29 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Fonctions utilitaires: vérifier lignes vides, allouer et remplir 
+ * la grille 2D avec espaces et contenu.
+ */
 
 #include "../includes/cub3d.h"
 

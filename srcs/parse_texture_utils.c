@@ -6,9 +6,14 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:50:21 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 20:50:28 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 13:40:33 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+ * Fonctions utilitaires: identifier le type de texture, nettoyer le chemin,
+ * vérifier les doublons et stocker dans la structure game.
+ */
 
 #include "../includes/cub3d.h"
 

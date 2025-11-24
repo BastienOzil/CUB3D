@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/20 00:12:42 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/24 10:08:00 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,24 @@ int				fill_map_grid(char **lines, t_game *game, int start);
 
 // check_map
 int				check_map(t_game *game);
+
+// flood_fill
+int				validate_map_walls(t_game *game);
+
+// init_game
+void			init_game(t_game *game);
+void			init_player(t_game *game);
+
+// load_textures
+int				load_textures(t_game *game);
+
+// cleanup
+void			free_game(t_game *game);
+
+// error
+int				ft_error(char *message);
+
+// start_game
+int				start_game(t_game *game);
 
 #endif
