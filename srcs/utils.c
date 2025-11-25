@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:40:55 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:46 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/25 15:16:06 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
  */
 
 #include "../includes/cub3d.h"
+
+int is_wall(char c)
+{
+    return (c == '1' || c == ' ');
+}
 
 int	is_space(char c)
 {

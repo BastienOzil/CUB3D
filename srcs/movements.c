@@ -6,16 +6,11 @@
 /*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/25 15:01:19 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/25 15:35:18 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-static int is_wall(char c)
-{
-    return (c == '1' || c == ' ');
-}
 
 static void move(t_game *game, double a)
 {
@@ -80,3 +75,35 @@ int handle_keypress(int keycode, t_game *game)
         rotate(game, -1.00);
     return (0);
 }
+
+int handle_mouse(int mouse_x, int mouse_y, t_game *game)
+{
+    static int  last_x = -1;
+    int         delta_x;
+    
+    if (last_x == -1)
+    {
+        last_x = mouse_x;
+        return (0);
+    }
+    delta_x = mouse_x - last_x;
+    if (delta_x != 0)
+        rotate(game, delta_x * 0.002);
+    last_x = mouse_x;
+    return (0);
+}
+
+/* Si on veut s'amuser à cacher le curseur (type FPS)
+int handle_mouse(int mouse_x, int mouse_y, t_game *game)
+{
+    int         delta_x;
+    
+    delta_x = mouse_x - (SCREEN_WIDTH / 2);
+    if (abs(delta_x) < 2)
+        rotate(game, delta_x * 0.002);
+    mlx_mouse_move(game->mlx, game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    return (0);
+}
+et add to init_mlx:
+    mlx_mouse_hide(game->mlx, game->win);
+*/

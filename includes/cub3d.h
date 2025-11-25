@@ -6,7 +6,7 @@
 /*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/25 15:02:37 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/25 15:36:52 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ int				ft_error(char *message);
 int				start_game(t_game *game);
 
 //movements
+int				is_wall(char c);
 int				handle_keypress(int keycode, t_game *game);
+int				handle_mouse(int mouse_x, int mouse_y, t_game *game);
 
 #endif

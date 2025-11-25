@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   keys.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:54:19 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/19 19:06:57 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/25 15:06:59 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEYMAP_H
-# define KEYMAP_H
+#ifndef KEYS_H
+# define KEYS_H
 
 # define CLOSE_BTN 17
 # define KEY_ESC 65307
