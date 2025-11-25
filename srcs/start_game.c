@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:17:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:36 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/25 15:00:47 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	start_game(t_game *game)
 	if (!load_textures(game))
 		return (0);
 	mlx_hook(game->win, 17, 0, close_game, game);
+	mlx_key_hook(game->win, handle_keypress, game);
 	ft_printf("Game initialized successfully!\n");
 	ft_printf("Player at (%.2f, %.2f) facing (%.2f, %.2f)\n",
 		game->player.pos_x, game->player.pos_y,
