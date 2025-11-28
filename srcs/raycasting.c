@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 14:50:50 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 15:05:15 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,46 +141,29 @@ void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
     int     d;
     int     tex_y;
     int     color;
-    double  perp_wall_dist;
 
-    if (ray.side == 0)
-        perp_wall_dist = (ray.map_x - game->player.pos_x + (1 - ray.step_x) / 2) / ray.dir_x;
-    else
-        perp_wall_dist = (ray.map_y - game->player.pos_y + (1 - ray.step_y) / 2) / ray.dir_y;
-    
-    y = 0;
-    while (y < wall.start)
-    {
+    y = -1;
+    while (++y < wall.start)
         my_mlx_pixel_put(&game->img, x, y, game->ceiling.hex);
-        y++;
-    }
-    
     tex_num = get_texture_num(&ray);
     if (ray.side == 0)
-        wallE = game->player.pos_y + perp_wall_dist * ray.dir_y;
+        wallE = game->player.pos_y + wall.dist * ray.dir_y;
     else
-        wallE = game->player.pos_x + perp_wall_dist * ray.dir_x;
+        wallE = game->player.pos_x + wall.dist * ray.dir_x;
     wallE -= floor(wallE);
     tex_x = (int)(wallE * TEX_WIDTH);
     if ((ray.side == 0 && ray.dir_x > 0) || (ray.side == 1 && ray.dir_y < 0))
         tex_x = TEX_WIDTH - tex_x - 1;
-    
-    y = wall.start;
-    while (y < wall.end)
+    y = wall.start -1 ;
+    while (++y < wall.end)
     {
         d = y * 256 - SCREEN_HEIGHT * 128 + wall.height * 128;
         tex_y = ((d * TEX_HEIGHT) / wall.height) / 256;
         color = get_tex_color(&game->texture.tex[tex_num], tex_x, tex_y);
         my_mlx_pixel_put(&game->img, x, y, color);
-        y++;
     }
-    
-    y = wall.end;
     while (y < SCREEN_HEIGHT)
-    {
-        my_mlx_pixel_put(&game->img, x, y, game->floor.hex);
-        y++;
-    }
+        my_mlx_pixel_put(&game->img, x, y++, game->floor.hex);
 }
 
 void	raycasting(t_game *game)
