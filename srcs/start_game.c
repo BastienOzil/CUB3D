@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:17:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 14:15:58 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/28 14:42:32 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	start_game(t_game *game)
 		return (0);
 	mlx_hook(game->win, 17, 0, close_game, game);
 	mlx_key_hook(game->win, handle_keypress, game);
-	mlx_mouse_hook(game->win, handle_mouse, game);
+	mlx_hook(game->win, 6, 1L << 6, handle_mouse, game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 	ft_printf("Game initialized successfully!\n");
 	ft_printf("Player at (%.2f, %.2f) facing (%.2f, %.2f)\n",
