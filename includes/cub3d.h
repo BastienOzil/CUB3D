@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 14:02:12 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 14:21:27 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,11 @@ typedef struct s_ray
 
 typedef struct s_wall
 {
-	int height;
-	int start;
-	int end;
+	double		dist;
+	int			height;
+	int			start;
+	int			end;
 }				t_wall;
-
 
 // parse_map
 int				parse_file(const char *file, t_game *game);
@@ -188,8 +188,7 @@ int				start_game(t_game *game);
 int				is_wall(char c);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_mouse(int mouse_x, int mouse_y, t_game *game);
-
-// raycasting
 void			raycasting(t_game *game);
+int				render_frame(t_game *game);
 
 #endif

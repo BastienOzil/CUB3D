@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/28 14:05:52 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 14:21:37 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int handle_keypress(int keycode, t_game *game)
         rotate(game, +1.00);
     if (KEY_RIGHT == keycode)
         rotate(game, -1.00);
+    render_frame(game);
     return (0);
 }
 
@@ -100,6 +101,7 @@ int handle_mouse(int mouse_x, int mouse_y, t_game *game)
     if (delta_x != 0)
         rotate(game, delta_x * 0.002);
     last_x = mouse_x;
+    render_frame(game);
     return (0);
 }
 
