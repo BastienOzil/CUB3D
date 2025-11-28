@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 14:03:42 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 14:50:50 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,17 @@ int get_texture_num(t_ray *ray)
 {
     if (ray->side == 0)  // Mur VERTICAL (Est ou Ouest)
     {
-        if (ray->dir_x > 0)
-            return (3);  // Est (EA)
+        if (ray->step_x > 0)
+            return (2);  // Ouest (WE) - on avance vers l'Est, on voit la face Ouest
         else
-            return (2);  // Ouest (WE)
+            return (3);  // Est (EA) - on recule vers l'Ouest, on voit la face Est
     }
     else  // Mur HORIZONTAL (Nord ou Sud)
     {
-        if (ray->dir_y > 0)
-            return (1);  // Sud (SO)
+        if (ray->step_y > 0)
+            return (0);  // Nord (NO) - on avance vers le Sud, on voit la face Nord
         else
-            return (0);  // Nord (NO)
+            return (1);  // Sud (SO) - on recule vers le Nord, on voit la face Sud
     }
 }
 

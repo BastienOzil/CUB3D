@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/28 14:42:32 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 14:57:36 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,18 @@ static void rotate(t_game *game, double a)
 {
     double dir_x;
     double dir_y;
+    double plane_x;
+    double plane_y;
     
     a =  (a * ROT_SPEED) * M_PI / 180.0;
     dir_x = (game->player).dir_x;
     dir_y = (game->player).dir_y;
+    plane_x = (game->player).plane_x;
+    plane_y = (game->player).plane_y;
     (game->player).dir_x = dir_x * cos(a) - dir_y * sin(a);
     (game->player).dir_y = dir_x * sin(a) + dir_y * cos(a);
+    (game->player).plane_x = plane_x * cos(a) - plane_y * sin(a);
+    (game->player).plane_y = plane_x * sin(a) + plane_y * cos(a);
 }
 
 static void strafe(t_game *game, double a)
@@ -87,33 +93,12 @@ int handle_keypress(int keycode, t_game *game)
 
 int handle_mouse(int mouse_x, int mouse_y, t_game *game)
 {
-    static int  last_x = -1;
     int         delta_x;
     
     (void)mouse_y;
-    if (last_x == -1)
-    {
-        last_x = mouse_x;
-        return (0);
-    }
-    delta_x = mouse_x - last_x;
+    delta_x = mouse_x - (SCREEN_WIDTH / 2);
     if (delta_x != 0)
         rotate(game, delta_x * 0.1);
-    last_x = mouse_x;
-    return (0);
-}
-
-/* Si on veut s'amuser à cacher le curseur (type FPS)
-int handle_mouse(int mouse_x, int mouse_y, t_game *game)
-{
-    int         delta_x;
-    
-    delta_x = mouse_x - (SCREEN_WIDTH / 2);
-    if (abs(delta_x) < 2)
-        rotate(game, delta_x * 0.002);
     mlx_mouse_move(game->mlx, game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     return (0);
 }
-et add to init_mlx:
-    mlx_mouse_hide(game->mlx, game->win);
-*/
