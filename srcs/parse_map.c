@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:57:09 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:32 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 09:32:57 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	parse_file(const char *file, t_game *game)
 	char	*content;
 	char	**lines;
 	int		map_started;
+	int		result;
 
 	if (!is_valid_extension(file))
 		return (0);
@@ -120,11 +121,7 @@ int	parse_file(const char *file, t_game *game)
 	if (!lines)
 		return (0);
 	map_started = 0;
-	if (!parse_lines(lines, game, &map_started))
-	{
-		free_split(lines);
-		return (0);
-	}
+	result = parse_lines(lines, game, &map_started);
 	free_split(lines);
-	return (1);
+	return (result);
 }

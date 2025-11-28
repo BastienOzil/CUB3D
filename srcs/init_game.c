@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:22:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:23 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 09:29:54 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,46 @@ void	init_game(t_game *game)
 	game->player.plane_y = 0;
 }
 
-void	init_player(t_game *game)
+static void	set_vertical_direction(t_game *game)
 {
-	game->player.pos_x = game->map.player_x + 0.5;
-	game->player.pos_y = game->map.player_y + 0.5;
+	game->player.dir_x = 0;
 	if (game->map.player_dir == 'N')
 	{
-		game->player.dir_x = 0;
 		game->player.dir_y = -1;
 		game->player.plane_x = 0.66;
 		game->player.plane_y = 0;
 	}
 	else if (game->map.player_dir == 'S')
 	{
-		game->player.dir_x = 0;
 		game->player.dir_y = 1;
 		game->player.plane_x = -0.66;
 		game->player.plane_y = 0;
 	}
-	else if (game->map.player_dir == 'E')
+}
+
+static void	set_horizontal_direction(t_game *game)
+{
+	game->player.dir_y = 0;
+	game->player.plane_y = 0.66;
+	if (game->map.player_dir == 'E')
 	{
 		game->player.dir_x = 1;
-		game->player.dir_y = 0;
 		game->player.plane_x = 0;
-		game->player.plane_y = 0.66;
 	}
 	else if (game->map.player_dir == 'W')
 	{
 		game->player.dir_x = -1;
-		game->player.dir_y = 0;
 		game->player.plane_x = 0;
 		game->player.plane_y = -0.66;
 	}
+}
+
+void	init_player(t_game *game)
+{
+	game->player.pos_x = game->map.player_x + 0.5;
+	game->player.pos_y = game->map.player_y + 0.5;
+	if (game->map.player_dir == 'N' || game->map.player_dir == 'S')
+		set_vertical_direction(game);
+	else if (game->map.player_dir == 'E' || game->map.player_dir == 'W')
+		set_horizontal_direction(game);
 }
