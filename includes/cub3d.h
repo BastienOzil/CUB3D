@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 10:50:08 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 13:17:19 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define TEX_HEIGHT 64
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.03
+//# define FOV 60
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -94,6 +95,30 @@ typedef struct s_game
 	t_color		floor;
 	t_color		ceiling;
 }				t_game;
+
+typedef struct s_ray
+{
+	int			step_x;
+	int			step_y;
+	int			map_x;
+	int			map_y;
+	int			side;
+	double		angle;
+	double		dir_x;
+	double		dir_y;
+	double		delta_x;
+	double		delta_y;
+	double		side_dist_y;
+	double		side_dist_x;
+}				t_ray;
+
+typedef struct s_wall
+{
+	int height;
+	int start;
+	int end;
+}				t_wall;
+
 
 // parse_map
 int				parse_file(const char *file, t_game *game);
