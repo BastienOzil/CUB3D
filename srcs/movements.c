@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/25 15:35:18 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:49:15 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+/*
+* Applique les deplacement du joueur sur la carte
+* de la souris du POV du joueur et de sa rotation.
+*/
 
 static void move(t_game *game, double a)
 {
@@ -81,6 +86,7 @@ int handle_mouse(int mouse_x, int mouse_y, t_game *game)
     static int  last_x = -1;
     int         delta_x;
     
+    (void)mouse_y;
     if (last_x == -1)
     {
         last_x = mouse_x;

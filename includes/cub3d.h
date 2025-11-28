@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/25 15:36:52 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:50:08 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.03
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-#endif
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef struct s_img
 {
@@ -159,7 +159,7 @@ int				ft_error(char *message);
 // start_game
 int				start_game(t_game *game);
 
-//movements
+// movements
 int				is_wall(char c);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_mouse(int mouse_x, int mouse_y, t_game *game);

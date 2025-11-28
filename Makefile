@@ -21,6 +21,7 @@ SRCS = $(SRC_DIR)/check_map.c \
        $(SRC_DIR)/init_game.c \
        $(SRC_DIR)/load_textures.c \
        $(SRC_DIR)/main.c \
+       $(SRC_DIR)/movements.c \
        $(SRC_DIR)/parse_color.c \
        $(SRC_DIR)/parse_color_utils.c \
        $(SRC_DIR)/parse_grid.c \
