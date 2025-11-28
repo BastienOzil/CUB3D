@@ -1,0 +1,710 @@
+================================================================================
+                  EXPLICATION DÉTAILLÉE DU RAY-CASTING
+                         Pour le projet CUB3D
+================================================================================
+
+TABLE DES MATIÈRES
+==================
+1. Concept global : Comment ça marche ?
+2. Fonction principale : raycasting()
+3. Fonction init_ray() - Initialiser le rayon
+4. Fonction perform_dda() - Trouver le mur
+5. Fonction calculate_wall_distance() - Calculer la distance
+6. Fonction draw_vertical_line() - Dessiner la colonne
+7. Récapitulatif complet
+8. Analogie finale
+
+
+================================================================================
+1. CONCEPT GLOBAL : COMMENT ÇA MARCHE ?
+================================================================================
+
+Imaginez que vous êtes dans un labyrinthe et que vous regardez devant vous.
+Le ray-casting simule votre vision en :
+
+1. Lançant des RAYONS (comme des lasers) depuis votre position
+2. Un rayon par COLONNE de l'écran (si l'écran fait 1280 pixels de large,
+   on lance 1280 rayons)
+3. Chaque rayon cherche le MUR LE PLUS PROCHE
+4. On dessine une LIGNE VERTICALE proportionnelle à la distance du mur
+
+
+Vue d'ensemble :
+                        ┌─────────────────────────────────────────┐
+                        │           ÉCRAN (1280 x 720)            │
+                        ├───┬───┬───┬───┬───┬───┬───┬───┬───┬───┤
+                        │ 0 │ 1 │ 2 │ 3 │ 4 │...│...│1277│1278│1279│
+                        └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+                          ↓   ↓   ↓   ↓   ↓         ↓   ↓   ↓
+                         Un rayon pour chaque colonne de l'écran
+
+
+Pourquoi colonne par colonne ?
+-------------------------------
+Chaque colonne de l'écran représente un "rayon" de vision :
+  • Colonne 0    = ce qu'on voit tout à GAUCHE
+  • Colonne 640  = ce qu'on voit au CENTRE
+  • Colonne 1279 = ce qu'on voit tout à DROITE
+
+
+================================================================================
+2. FONCTION PRINCIPALE : raycasting()
+================================================================================
+
+Pseudo-code simplifié :
+-----------------------
+
+void raycasting(t_game *game)
+{
+    int x = 0;
+    
+    // Pour CHAQUE colonne de l'écran
+    while (x < SCREEN_WIDTH)  // 0 à 1279
+    {
+        // 1. Préparer le rayon pour cette colonne
+        init_ray(&ray, x, game);
+        
+        // 2. Lancer le rayon jusqu'à toucher un mur
+        perform_dda(&ray, game);
+        
+        // 3. Calculer à quelle distance est le mur
+        calculate_wall_distance(&ray, game);
+        
+        // 4. Dessiner la ligne verticale pour cette colonne
+        draw_vertical_line(x, &ray, game);
+        
+        x++;
+    }
+}
+
+
+Explication :
+-------------
+Cette fonction est le CHEF D'ORCHESTRE du ray-casting.
+Elle répète 1280 fois (une fois par colonne) les 4 étapes suivantes :
+  1. Initialiser
+  2. Chercher le mur
+  3. Calculer la distance
+  4. Dessiner
+
+
+================================================================================
+3. FONCTION init_ray() - INITIALISER LE RAYON
+================================================================================
+
+Objectif :
+----------
+Préparer les données mathématiques pour lancer un rayon depuis la position
+du joueur dans une direction précise.
+
+
+Les variables importantes :
+---------------------------
+
+Schéma de la vision du joueur :
+
+                        ↑ Nord
+                        │
+                        │  dir (direction regard)
+                        │ ↗
+                        │/
+            Ouest ──────●────── Est   ← Joueur (pos_x, pos_y)
+                       /│
+                      / │
+                   plane │
+                        ↓ Sud
+
+  • dir   = direction où le joueur regarde (un vecteur)
+  • plane = plan de la caméra (perpendiculaire à dir)
+  • pos   = position du joueur dans la map
+
+
+Calculs expliqués ÉTAPE PAR ÉTAPE :
+------------------------------------
+
+ÉTAPE 1 : camera_x
+==================
+Code :
+    camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+
+Qu'est-ce que c'est ?
+  • Convertit le numéro de colonne (0 à 1279) en coordonnée (-1 à +1)
+
+Exemples concrets :
+  x = 0          → camera_x = -1.0  (tout à gauche)
+  x = 640        → camera_x =  0.0  (au centre)
+  x = 1279       → camera_x = +1.0  (tout à droite)
+
+
+ÉTAPE 2 : Direction du rayon
+=============================
+Code :
+    ray_dir_x = player.dir_x + player.plane_x * camera_x;
+    ray_dir_y = player.dir_y + player.plane_y * camera_x;
+
+Qu'est-ce que c'est ?
+  • Calcule la direction dans laquelle le rayon va partir
+  • dir   = direction où le joueur regarde
+  • plane = plan de la caméra (largeur du champ de vision)
+
+Exemple visuel si le joueur regarde vers le Nord :
+
+                        ↑ dir_y = -1
+                        │
+            plane_x     │ plane_x = 0.66
+             ◄──────────●──────────►
+                        │
+                        ↓
+                      joueur
+
+Pour le rayon du CENTRE (camera_x = 0) :
+    ray_dir_x = 0 + 0.66 * 0 = 0
+    ray_dir_y = -1 + 0 * 0 = -1
+    → Le rayon va TOUT DROIT vers le nord
+
+Pour le rayon de GAUCHE (camera_x = -1) :
+    ray_dir_x = 0 + 0.66 * (-1) = -0.66
+    ray_dir_y = -1 + 0 * (-1) = -1
+    → Le rayon part vers le NORD-OUEST
+
+Pour le rayon de DROITE (camera_x = +1) :
+    ray_dir_x = 0 + 0.66 * (+1) = 0.66
+    ray_dir_y = -1 + 0 * (+1) = -1
+    → Le rayon part vers le NORD-EST
+
+
+ÉTAPE 3 : Position de départ dans la grille
+============================================
+Code :
+    map_x = (int)player.pos_x;  // Case X où se trouve le joueur
+    map_y = (int)player.pos_y;  // Case Y où se trouve le joueur
+
+Exemple :
+    Si player.pos_x = 5.3 et player.pos_y = 8.7
+    → map_x = 5, map_y = 8
+
+Pourquoi ?
+  • La map est une grille de cases entières (0, 1, 2, 3...)
+  • Le joueur peut être ENTRE deux cases (position décimale)
+  • On arrondit à l'entier inférieur pour savoir dans quelle case il est
+
+
+ÉTAPE 4 : delta_dist - Distance entre intersections
+====================================================
+Code :
+    delta_dist_x = fabs(1 / ray_dir_x);
+    delta_dist_y = fabs(1 / ray_dir_y);
+
+Qu'est-ce que c'est ?
+  • La distance que le rayon doit parcourir pour traverser UNE case entière
+  • delta_dist_x = distance horizontale entre deux lignes verticales
+  • delta_dist_y = distance verticale entre deux lignes horizontales
+
+Exemple visuel :
+
+    ┌───────┬───────┬───────┐
+    │       │       │       │
+    │       │       │       │
+    ├───────┼───────┼───────┤  ← delta_dist_y = distance verticale
+    │       │●──────│───────│     entre ces lignes
+    │       │   ↘   │       │
+    ├───────┼───────┼─↘─────┤
+    │       │       │   ↘   │
+    │       │       │     ↘ │
+    └───────┴───────┴───────┘
+                 ↑
+            delta_dist_x
+
+
+ÉTAPE 5 : step et side_dist - Direction et distance initiale
+=============================================================
+Code :
+    if (ray_dir_x < 0)  // Rayon va vers la GAUCHE
+    {
+        step_x = -1;
+        side_dist_x = (player.pos_x - map_x) * delta_dist_x;
+    }
+    else  // Rayon va vers la DROITE
+    {
+        step_x = 1;
+        side_dist_x = (map_x + 1.0 - player.pos_x) * delta_dist_x;
+    }
+    
+    // Même chose pour Y
+    if (ray_dir_y < 0)  // Rayon va vers le HAUT
+    {
+        step_y = -1;
+        side_dist_y = (player.pos_y - map_y) * delta_dist_y;
+    }
+    else  // Rayon va vers le BAS
+    {
+        step_y = 1;
+        side_dist_y = (map_y + 1.0 - player.pos_y) * delta_dist_y;
+    }
+
+Qu'est-ce que c'est ?
+  • step_x : dans quel sens avancer (-1 = gauche, +1 = droite)
+  • step_y : dans quel sens avancer (-1 = haut, +1 = bas)
+  • side_dist_x : distance jusqu'à la prochaine ligne VERTICALE
+  • side_dist_y : distance jusqu'à la prochaine ligne HORIZONTALE
+
+Exemple visuel :
+
+    ┌───────┬───────┬───────┐
+    │       │       │       │
+    │       │       │       │
+    ├───────┼───────┼───────┤
+    │       │   ●───→       │  Joueur à 5.3, rayon va à droite
+    │       │   ↑   │       │  side_dist_x = distance de 5.3 à 6.0
+    ├───────┼───┼───┼───────┤
+    │       │   │   │       │
+    │       │   5   6       │
+    └───────┴───────┴───────┘
+
+
+================================================================================
+4. FONCTION perform_dda() - TROUVER LE MUR
+================================================================================
+
+Objectif :
+----------
+Faire avancer le rayon case par case jusqu'à toucher un mur.
+
+DDA = Digital Differential Analysis (Analyse Différentielle Digitale)
+
+
+Algorithme :
+------------
+
+void perform_dda(t_ray *ray, t_game *game)
+{
+    int hit = 0;
+    
+    while (!hit)
+    {
+        // Avancer dans la direction où la prochaine intersection
+        // est la plus PROCHE
+        
+        if (ray->side_dist_x < ray->side_dist_y)
+        {
+            // La prochaine ligne VERTICALE est plus proche
+            ray->side_dist_x += ray->delta_dist_x;
+            ray->map_x += ray->step_x;
+            ray->side = 0;  // Mur VERTICAL touché
+        }
+        else
+        {
+            // La prochaine ligne HORIZONTALE est plus proche
+            ray->side_dist_y += ray->delta_dist_y;
+            ray->map_y += ray->step_y;
+            ray->side = 1;  // Mur HORIZONTAL touché
+        }
+        
+        // Vérifier si on a touché un mur
+        if (game->map.grid[ray->map_y][ray->map_x] == '1')
+            hit = 1;
+    }
+}
+
+
+Animation du rayon (étape par étape) :
+---------------------------------------
+
+Étape 0 : Le joueur au centre, rayon part vers la droite
+    ┌───┬───┬───┬───┐
+    │ 1 │ 1 │ 1 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │●→ 0 │ 1 │  ← Rayon part
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 │ 1 │
+    └───┴───┴───┴───┘
+
+Étape 1 : Avancer en X (side_dist_x < side_dist_y)
+    ┌───┬───┬───┬───┐
+    │ 1 │ 1 │ 1 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 →│ 1 │  ← map_x++ (on avance à droite)
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 │ 1 │
+    └───┴───┴───┴───┘
+
+Étape 2 : Avancer en Y (side_dist_y < side_dist_x)
+    ┌───┬───┬───┬───┐
+    │ 1 │ 1 │ 1 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 ↓│ 1 │  ← map_y++ (on descend)
+    └───┴───┴───┴───┘
+
+Étape 3 : Avancer en X → TOUCHE LE MUR !
+    ┌───┬───┬───┬───┐
+    │ 1 │ 1 │ 1 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 │ 1 │
+    ├───┼───┼───┼───┤
+    │ 1 │ 0 │ 0 │█│  ← HIT! grid[y][x] == '1'
+    └───┴───┴───┴───┘
+
+
+Pourquoi la variable "side" ?
+------------------------------
+
+side = 0 : Mur VERTICAL (face Nord-Sud)
+    ┌───┬───┐
+    │   ║   │  ← On a touché cette face verticale
+    │   ║   │     (côté Est ou Ouest du mur)
+    └───┴───┘
+
+side = 1 : Mur HORIZONTAL (face Est-Ouest)
+    ┌───┬───┐
+    │   │   │
+    ╠═══╬═══╣  ← On a touché cette face horizontale
+    │   │   │     (côté Nord ou Sud du mur)
+    └───┴───┘
+
+Cette information sert à :
+  1. Choisir la bonne TEXTURE (Nord, Sud, Est, Ouest)
+  2. Calculer la DISTANCE correctement
+
+
+================================================================================
+5. FONCTION calculate_wall_distance() - CALCULER LA DISTANCE
+================================================================================
+
+Objectif :
+----------
+Calculer la distance PERPENDICULAIRE au mur pour éviter l'effet "fish-eye"
+(déformation de l'image).
+
+
+Formules :
+----------
+
+if (ray->side == 0)  // Mur VERTICAL
+    perp_wall_dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2) 
+                     / ray->ray_dir_x;
+else  // Mur HORIZONTAL
+    perp_wall_dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2) 
+                     / ray->ray_dir_y;
+
+
+Pourquoi "perpendiculaire" ?
+-----------------------------
+
+Distance RÉELLE (mauvais) :
+    ╔═══════════╗
+    ║           ║
+    ║     ●─────┼──→ Rayon oblique = distance plus longue
+    ║           ║
+    ╚═══════════╝
+
+Distance PERPENDICULAIRE (bon) :
+    ╔═══════════╗
+    ║           ║
+    ║     ●─────┤    Projection perpendiculaire = distance correcte
+    ║      ↘    ║
+    ╚═══════════╝
+
+Sans correction, les murs sur les côtés paraîtraient plus éloignés
+que les murs au centre → effet fish-eye (comme une lentille de poisson).
+
+
+Calculer la HAUTEUR du mur à l'écran :
+---------------------------------------
+
+Code :
+    line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+    
+    draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+    if (draw_start < 0)
+        draw_start = 0;
+    
+    draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+    if (draw_end >= SCREEN_HEIGHT)
+        draw_end = SCREEN_HEIGHT - 1;
+
+
+Pourquoi ça marche ?
+--------------------
+
+Mur PROCHE → petite distance → GRANDE hauteur à l'écran
+    ┌────────┐
+    │████████│  ← Prend TOUT l'écran (ou plus)
+    │████████│
+    │████████│
+    │████████│
+    └────────┘
+
+Mur LOIN → grande distance → PETITE hauteur à l'écran
+    ┌────────┐
+    │        │
+    │  ████  │  ← Petit rectangle au centre
+    │        │
+    └────────┘
+
+
+Variables importantes :
+-----------------------
+  • line_height = hauteur totale de la ligne de mur
+  • draw_start  = pixel Y où commence le mur (haut)
+  • draw_end    = pixel Y où finit le mur (bas)
+
+
+================================================================================
+6. FONCTION draw_vertical_line() - DESSINER LA COLONNE
+================================================================================
+
+Objectif :
+----------
+Dessiner le plafond, le mur texturé, et le sol pour UNE colonne de l'écran.
+
+
+Structure d'une colonne :
+--------------------------
+
+         x (une colonne)
+         ↓
+      ┌──┐
+    0 │██│ ← PLAFOND (ceiling color)
+      │██│
+      │██│
+      │▓▓│ ← draw_start (début du mur)
+      │▓▓│
+      │▓▓│ ← MUR TEXTURÉ
+      │▓▓│
+      │▓▓│ ← draw_end (fin du mur)
+      │░░│
+      │░░│ ← SOL (floor color)
+  720 │░░│
+      └──┘
+
+
+Pseudo-code complet :
+---------------------
+
+void draw_vertical_line(int x, t_ray *ray, t_game *game)
+{
+    // ========================================
+    // ÉTAPE 1 : Dessiner le PLAFOND
+    // ========================================
+    for (int y = 0; y < draw_start; y++)
+    {
+        put_pixel(x, y, game->ceiling.hex);
+    }
+    
+    
+    // ========================================
+    // ÉTAPE 2 : Dessiner le MUR (avec texture)
+    // ========================================
+    
+    // 2a. Déterminer QUELLE TEXTURE utiliser (N/S/E/W)
+    int tex_num = get_texture_num(ray);
+    
+    // 2b. Calculer OÙ exactement le rayon a touché le mur
+    double wallX;
+    if (ray->side == 0)  // Mur vertical
+        wallX = player.pos_y + perp_wall_dist * ray->ray_dir_y;
+    else  // Mur horizontal
+        wallX = player.pos_x + perp_wall_dist * ray->ray_dir_x;
+    
+    wallX -= floor(wallX);  // Garder seulement la partie décimale
+    
+    // 2c. Convertir en coordonnée X de la texture
+    int tex_x = (int)(wallX * TEX_WIDTH);
+    
+    // Inverser si nécessaire
+    if ((ray->side == 0 && ray->ray_dir_x > 0) ||
+        (ray->side == 1 && ray->ray_dir_y < 0))
+        tex_x = TEX_WIDTH - tex_x - 1;
+    
+    // 2d. Dessiner CHAQUE PIXEL du mur
+    for (int y = draw_start; y < draw_end; y++)
+    {
+        // Calculer quelle LIGNE de la texture utiliser
+        int d = y * 256 - SCREEN_HEIGHT * 128 + line_height * 128;
+        int tex_y = ((d * TEX_HEIGHT) / line_height) / 256;
+        
+        // Récupérer la couleur du pixel de la texture
+        int color = get_texture_color(game->texture.tex[tex_num], 
+                                       tex_x, tex_y);
+        
+        // Dessiner le pixel à l'écran
+        put_pixel(x, y, color);
+    }
+    
+    
+    // ========================================
+    // ÉTAPE 3 : Dessiner le SOL
+    // ========================================
+    for (int y = draw_end; y < SCREEN_HEIGHT; y++)
+    {
+        put_pixel(x, y, game->floor.hex);
+    }
+}
+
+
+Déterminer quelle texture utiliser :
+-------------------------------------
+
+int get_texture_num(t_ray *ray)
+{
+    if (ray->side == 0)  // Mur VERTICAL (Est ou Ouest)
+    {
+        if (ray->ray_dir_x > 0)
+            return (3);  // Est (EA)
+        else
+            return (2);  // Ouest (WE)
+    }
+    else  // Mur HORIZONTAL (Nord ou Sud)
+    {
+        if (ray->ray_dir_y > 0)
+            return (1);  // Sud (SO)
+        else
+            return (0);  // Nord (NO)
+    }
+}
+
+
+Explication de wallX :
+----------------------
+
+wallX représente la position EXACTE où le rayon touche le mur,
+exprimée en fraction (0.0 à 1.0).
+
+Exemple :
+    Si le mur fait 1 unité de large et que le rayon le touche :
+      • à 25% de sa largeur → wallX = 0.25
+      • au milieu           → wallX = 0.5
+      • à 75%               → wallX = 0.75
+
+On utilise cette valeur pour choisir quelle COLONNE de la texture afficher.
+
+
+Explication de tex_y :
+----------------------
+
+tex_y représente quelle LIGNE de la texture afficher pour un pixel Y donné.
+
+Formule complexe pour éviter les déformations :
+    int d = y * 256 - SCREEN_HEIGHT * 128 + line_height * 128;
+    int tex_y = ((d * TEX_HEIGHT) / line_height) / 256;
+
+Plus simplement (version approximative) :
+    tex_y = ((y - draw_start) * TEX_HEIGHT) / line_height;
+
+
+================================================================================
+7. RÉCAPITULATIF COMPLET
+================================================================================
+
+Vue d'ensemble du processus :
+------------------------------
+
+Pour CHAQUE colonne X de l'écran (0 à 1279) :
+    ↓
+    1. init_ray(x)
+       - Calculer la direction du rayon pour cette colonne
+       - Préparer les variables de distance (delta_dist, side_dist, step)
+    ↓
+    2. perform_dda()
+       - Avancer case par case dans la grille
+       - S'arrêter quand on touche un mur ('1')
+       - Mémoriser quel CÔTÉ du mur est touché (side)
+    ↓
+    3. calculate_wall_distance()
+       - Calculer la distance PERPENDICULAIRE au mur
+       - Calculer la HAUTEUR du mur à l'écran (line_height)
+       - Calculer où commence et finit le mur (draw_start, draw_end)
+    ↓
+    4. draw_vertical_line(x)
+       - Dessiner le PLAFOND (0 → draw_start)
+       - Dessiner le MUR TEXTURÉ (draw_start → draw_end)
+       - Dessiner le SOL (draw_end → SCREEN_HEIGHT)
+
+
+Flux de données :
+-----------------
+
+INPUT:
+  • game->player.pos_x, pos_y    (position du joueur)
+  • game->player.dir_x, dir_y    (direction du regard)
+  • game->player.plane_x, plane_y (plan de la caméra)
+  • game->map.grid[][]           (la map avec les murs)
+
+PROCESSING:
+  • Lancer 1280 rayons (un par colonne)
+  • Chaque rayon trouve le mur le plus proche
+  • Calculer la distance et la hauteur
+
+OUTPUT:
+  • Une image 1280x720 pixels affichée à l'écran
+  • Effet 3D créé par la perspective
+
+
+================================================================================
+8. ANALOGIE FINALE
+================================================================================
+
+Imaginez que vous prenez 1280 PHOTOS avec un appareil photo qui tourne
+de gauche à droite :
+
+    Photo 0    : regarde complètement à GAUCHE
+    Photo 1    : regarde un peu plus au centre
+    Photo 2    : encore un peu plus
+    ...
+    Photo 640  : regarde droit devant (CENTRE)
+    ...
+    Photo 1279 : regarde complètement à DROITE
+
+Pour chaque photo :
+  1. Vous mesurez la distance du premier mur visible
+  2. Vous dessinez une BARRE VERTICALE :
+     - Plus le mur est PROCHE → barre HAUTE
+     - Plus le mur est LOIN   → barre BASSE
+
+En assemblant les 1280 barres côte à côte, vous obtenez une vue 3D
+du labyrinthe ! 🎮
+
+
+Résultat visuel :
+-----------------
+
+    Murs proches = grandes barres :
+    ████████    ████████
+    ████████    ████████
+    ████████    ████████
+    ████████    ████████
+    
+    Murs loin = petites barres :
+        ██          ██
+        ██          ██
+    
+    Assemblées ensemble :
+    ████████        ██          ██        ████████
+    ████████        ██          ██        ████████
+    ████████                              ████████
+    ████████                              ████████
+         ↑                                     ↑
+      mur proche                           mur proche
+
+
+================================================================================
+FIN DE L'EXPLICATION
+================================================================================
+
+Ressources complémentaires :
+-----------------------------
+• https://lodev.org/cgtutor/raycasting.html (tutoriel de référence)
+• Wikipédia : Ray casting
+• Vidéo YouTube : "Ray Casting Tutorial"
+
+Points clés à retenir :
+-----------------------
+✅ Un rayon par colonne de l'écran
+✅ DDA pour trouver le mur
+✅ Distance perpendiculaire (pas réelle)
+✅ Hauteur inversement proportionnelle à la distance
+✅ Textures pour le réalisme
+
+Bonne chance pour l'implémentation ! 🚀
