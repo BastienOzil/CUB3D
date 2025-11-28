@@ -6,7 +6,7 @@
 /*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 13:06:26 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/28 13:51:39 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,72 @@ void perform_dda(t_ray *ray, t_game *game)
     }
 }
 
+t_wall init_wall(t_ray *ray, t_player player)
+{
+    t_wall wall;
+    double dist;
+    
+    if (ray->side == 0)
+        dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2) / ray->dir_x;
+    else
+        dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2) / ray->dir_y;
+    wall.height = (int)(SCREEN_WIDTH / dist);
+    wall.start = -wall.height / 2 + SCREEN_HEIGHT / 2;
+    if (wall.start < 0)
+        wall.start = 0;
+    wall.end = wall.height / 2 + SCREEN_HEIGHT / 2;
+    if (wall.end >= SCREEN_HEIGHT)
+        wall.end = SCREEN_HEIGHT - 1;
+    wall.dist = dist;
+    return (wall);
+}
+int get_texture_num(t_ray *ray)
+{
+    if (ray->side == 0)  // Mur VERTICAL (Est ou Ouest)
+    {
+        if (ray->dir_x > 0)
+            return (3);  // Est (EA)
+        else
+            return (2);  // Ouest (WE)
+    }
+    else  // Mur HORIZONTAL (Nord ou Sud)
+    {
+        if (ray->dir_y > 0)
+            return (1);  // Sud (SO)
+        else
+            return (0);  // Nord (NO)
+    }
+}
 
+void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
+{
+    for (int y = 0; y < wall.start; y++)
+        put_pixel(x, y, game->ceiling.hex);
+    int tex_num = get_texture_num(&ray);
+    double wallE;
+    if (ray.side == 0)
+        wallE = game->player.pos_y + wall.dist * ray.dir_y;
+    else
+        wallE = game->player.pos_x + wall.dist * ray.dir_x;
+    wallE -= floor(wallE);
+    int tex_x = (int)(wallE * TEX_WIDTH);
+    if ((ray.side == 0 && ray.dir_x > 0) || (ray.side == 1 && ray.dir_y < 0))
+        tex_x = TEX_WIDTH - tex_x - 1;
+    for (int y = wall.start; y < wall.end; y++)
+    {
+        int d = y * 256 - SCREEN_HEIGHT * 128 + wall.height * 128;
+        int tex_y = ((d * TEX_HEIGHT) / wall.height) / 256 ;
+        int color = get_texture_color(game->texture.tex[tex_num], tex_x, tex_y);
+        put_pixel(x, y, color);
+    }
+    for (int y = wall.end; y < SCREEN_HEIGHT; y++)
+        put_pixel(x, y, game->floor.hex);
+}
 
 void	raycasting(t_game *game)
 {
 	t_ray   ray;
+    t_wall  wall;
 	int     x;
 
 	x = -1;
@@ -87,7 +148,7 @@ void	raycasting(t_game *game)
 	{
 		ray = init_ray(x, game->player);
         perform_dda(&ray, game);
-        calculate_wall_distance(&ray, game);
-        draw_vertical_line(x, &ray, game);
+        wall = init_wall(&ray, game->player);
+        draw_line(x, ray, game, wall);
 	}
 }
