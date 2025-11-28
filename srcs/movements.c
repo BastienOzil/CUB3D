@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/11/28 10:49:15 by bozil            ###   ########.fr       */
+/*   Updated: 2025/11/28 14:05:52 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ static void move(t_game *game, double a)
     dir_y = (game->player).dir_y;
     grid = (game->map).grid;
     if (x >= (double)(game->map.width) || x <= 0.00)
+    {
         ;
+    }
     else if (!is_wall(grid[(int)y][(int)(x + (a * MOVE_SPEED * sin(dir_x)))]))
         x += (a * MOVE_SPEED * sin(dir_x));
     if (y >= (double)(game->map.height) || y <= 0.00)
+    {
         ;
+    }
     if (!is_wall(grid[(int)(y + (a * MOVE_SPEED) * cos(dir_y))][(int)x]))
         y += (a * MOVE_SPEED * cos(dir_y));
     (game->player).plane_x = x;

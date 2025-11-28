@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 13:17:19 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/11/28 14:02:12 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,8 @@ int				start_game(t_game *game);
 int				is_wall(char c);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_mouse(int mouse_x, int mouse_y, t_game *game);
+
+// raycasting
+void			raycasting(t_game *game);
 
 #endif
