@@ -6,13 +6,13 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:46:47 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:22 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/01 10:21:41 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Vérifie que tous les espaces accessibles (0 et joueur) sont entourés 
- * de murs en validant les 4 cases adjacentes.
+ * Vérifie que la map est fermée: tous les espaces accessibles (0 et joueur) 
+ * ne doivent jamais toucher le vide (hors limites de la grille).
  */
 
 #include "../includes/cub3d.h"
@@ -32,8 +32,6 @@ static int	is_valid_position(t_game *game, int y, int x)
 		return (0);
 	line_len = ft_strlen(game->map.grid[y]);
 	if (x >= line_len)
-		return (0);
-	if (game->map.grid[y][x] == ' ')
 		return (0);
 	return (1);
 }

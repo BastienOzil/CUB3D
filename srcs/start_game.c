@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:17:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 15:06:03 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/01 10:21:56 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 static int	close_game(t_game *game)
 {
-	(void)game;
+	free_game(game);
 	exit(0);
 	return (0);
 }
@@ -44,6 +44,7 @@ static int	init_mlx(t_game *game)
 
 int	render_frame(t_game *game)
 {
+	process_movement(game);
 	ft_memset(game->img.addr, 0, SCREEN_HEIGHT * (game->img.line_length));
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
@@ -58,6 +59,7 @@ int	start_game(t_game *game)
 		return (0);
 	mlx_hook(game->win, 17, 0, close_game, game);
 	mlx_hook(game->win, 2, 1L<<0, handle_keypress, game);
+	mlx_hook(game->win, 3, 1L<<1, handle_keyrelease, game);
 	mlx_hook(game->win, 6, 1L << 6, handle_mouse, game);
 	mlx_mouse_hide(game->mlx, game->win);
 	mlx_mouse_move(game->mlx, game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);

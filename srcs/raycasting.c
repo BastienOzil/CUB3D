@@ -3,60 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 15:40:22 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/01 10:21:47 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
-		return ;
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-static int	get_tex_color(t_img *texture, int x, int y)
-{
-	char	*pixel;
-
-	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
-		return (0);
-	pixel = texture->addr + (y * texture->line_length + x
-			* (texture->bits_per_pixel / 8));
-	return (*(unsigned int *)pixel);
-}
-
-static t_ray side(t_ray ray, t_player player)
-{
-    if (ray.dir_x < 0)
-    {
-        ray.step_x = -1;
-        ray.side_dist_x = (player.pos_x - ray.map_x) * ray.delta_x;
-    }
-    else
-    {
-        ray.step_x = 1;
-        ray.side_dist_x = (ray.map_x + 1.0 - player.pos_x) * ray.delta_x;
-    }
-    if (ray.dir_y < 0)
-    {
-        ray.step_y = -1;
-        ray.side_dist_y = (player.pos_y - ray.map_y) * ray.delta_y;
-    }
-    else
-    {
-        ray.step_y = 1;
-        ray.side_dist_y = (ray.map_y + 1.0 - player.pos_y) * ray.delta_y;
-    }
-    return (ray);
-}
 
 t_ray init_ray(int x, t_player player)
 {
@@ -114,24 +68,6 @@ t_wall init_wall(t_ray *ray, t_player player)
         wall.end = SCREEN_HEIGHT - 1;
     return (wall);
 }
-int get_texture_num(t_ray *ray)
-{
-    if (ray->side == 0)  // Mur VERTICAL (Est ou Ouest)
-    {
-        if (ray->step_x > 0)
-            return (2);  // Ouest (WE) - on avance vers l'Est, on voit la face Ouest
-        else
-            return (3);  // Est (EA) - on recule vers l'Ouest, on voit la face Est
-    }
-    else  // Mur HORIZONTAL (Nord ou Sud)
-    {
-        if (ray->step_y > 0)
-            return (0);  // Nord (NO) - on avance vers le Sud, on voit la face Nord
-        else
-            return (1);  // Sud (SO) - on recule vers le Nord, on voit la face Sud
-    }
-}
-
 void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
 {
     int     y;

@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:22:28 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 09:29:54 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/01 10:21:34 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	init_game(t_game *game)
 	game->player.dir_y = 0;
 	game->player.plane_x = 0;
 	game->player.plane_y = 0;
+	ft_memset(game->keys, 0, sizeof(game->keys));
 }
 
 static void	set_vertical_direction(t_game *game)

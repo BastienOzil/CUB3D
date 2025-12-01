@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 14:21:27 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/01 10:23:17 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_game
 	t_texture	texture;
 	t_color		floor;
 	t_color		ceiling;
+	int			keys[70000];
 }				t_game;
 
 typedef struct s_ray
@@ -186,8 +187,20 @@ int				start_game(t_game *game);
 
 // movements
 int				is_wall(char c);
+void			rotate(t_game *game, double a);
+void			process_movement(t_game *game);
 int				handle_keypress(int keycode, t_game *game);
+int				handle_keyrelease(int keycode, t_game *game);
 int				handle_mouse(int mouse_x, int mouse_y, t_game *game);
+// raycasting
+t_ray			side(t_ray ray, t_player player);
+void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
+int				get_tex_color(t_img *texture, int x, int y);
+int				get_texture_num(t_ray *ray);
+t_ray			init_ray(int x, t_player player);
+void			perform_dda(t_ray *ray, t_game *game);
+t_wall			init_wall(t_ray *ray, t_player player);
+void			draw_line(int x, t_ray ray, t_game *game, t_wall wall);
 void			raycasting(t_game *game);
 int				render_frame(t_game *game);
 
