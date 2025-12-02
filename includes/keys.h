@@ -6,7 +6,7 @@
 /*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:54:19 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/25 15:06:59 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/01 20:52:53 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define KEYS_H
 
 # define CLOSE_BTN 17
+# define KEY_ALT 18
 # define KEY_ESC 65307
 # define KEY_W 119
 # define KEY_A 97

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/01 10:23:17 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/01 19:28:46 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define MOVE_SPEED 0.05
-# define ROT_SPEED 0.03
+# define ROT_SPEED 0.3
 //# define FOV 60
 
 # ifndef M_PI

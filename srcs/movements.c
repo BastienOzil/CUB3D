@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/12/01 10:21:27 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/01 19:28:28 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,12 @@ void	process_movement(t_game *game)
 	if (game->keys[KEY_DOWN])
 		move_player(game, -1.00);
 	if (game->keys[KEY_LEFT])
-		strafe_player(game, -1.00);
+		rotate(game, -1.00);
 	if (game->keys[KEY_RIGHT])
+		rotate(game, +1.00);
+	if (game->keys[KEY_A])
+		strafe_player(game, -1.00);
+	if (game->keys[KEY_D])
 		strafe_player(game, +1.00);
 }
 
@@ -91,7 +95,7 @@ int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
 	delta_x = mouse_x - last_x;
 	if (delta_x != 0)
 	{
-		rotate(game, delta_x * 1.0);
+		rotate(game, delta_x * 0.01);
 		last_x = SCREEN_WIDTH / 2;
 		mlx_mouse_move(game->mlx, game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	}
