@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 10:10:00 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/01 10:10:43 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/03 09:51:11 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int	get_texture_num(t_ray *ray)
 {
 	if (ray->side == 0)
 	{
-		if (ray->dir_x < 0)
+		if (ray->step_x < 0)
 			return (3);
 		else
 			return (2);
 	}
 	else
 	{
-		if (ray->dir_y < 0)
+		if (ray->step_y < 0)
 			return (0);
 		else
 			return (1);

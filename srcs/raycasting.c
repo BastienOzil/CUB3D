@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/01 10:21:47 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/03 09:25:51 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ void perform_dda(t_ray *ray, t_game *game)
 t_wall init_wall(t_ray *ray, t_player player)
 {
     t_wall wall;
-    double dist;
     
     if (ray->side == 0)
-        dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2) / ray->dir_x;
+        wall.dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2) / ray->dir_x;
     else
-        dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2) / ray->dir_y;
-    wall.height = (int)(SCREEN_HEIGHT / dist);
+        wall.dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2) / ray->dir_y;
+    wall.height = (int)(SCREEN_HEIGHT / wall.dist);
     wall.start = -wall.height / 2 + SCREEN_HEIGHT / 2;
     if (wall.start < 0)
         wall.start = 0;

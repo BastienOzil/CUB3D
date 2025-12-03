@@ -6,7 +6,7 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:22:35 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/24 13:40:24 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/03 09:10:39 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	load_textures(t_game *game)
 		return (0);
 	if (!load_single_texture(game, &game->texture.tex[1], game->texture.south))
 		return (0);
-	if (!load_single_texture(game, &game->texture.tex[2], game->texture.west))
+	if (!load_single_texture(game, &game->texture.tex[2], game->texture.east))
 		return (0);
-	if (!load_single_texture(game, &game->texture.tex[3], game->texture.east))
+	if (!load_single_texture(game, &game->texture.tex[3], game->texture.west))
 		return (0);
 	return (1);
 }
