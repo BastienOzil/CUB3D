@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/12/04 11:23:30 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/04 11:44:52 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
  * de la souris du POV du joueur et de sa rotation.
  */
 
-static void	move_player(t_game *game, double a)
+static void move_player(t_game *game, double a)
 {
-	char	**grid;
-	double	new_x;
-	double	new_y;
+	char **grid;
+	double new_x;
+	double new_y;
 
 	grid = game->map.grid;
 	new_x = game->player.pos_x + a * MOVE_SPEED * game->player.dir_x;
@@ -34,11 +34,11 @@ static void	move_player(t_game *game, double a)
 			game->player.pos_y = new_y;
 }
 
-void	rotate(t_game *game, double a)
+void rotate(t_game *game, double a)
 {
-	double	old_dir_x;
-	double	old_plane_x;
-	double	angle;
+	double old_dir_x;
+	double old_plane_x;
+	double angle;
 
 	angle = (a * ROT_SPEED) * M_PI / 180.0;
 	old_dir_x = game->player.dir_x;
@@ -49,13 +49,13 @@ void	rotate(t_game *game, double a)
 	game->player.plane_y = old_plane_x * sin(angle) + game->player.plane_y * cos(angle);
 }
 
-static void	strafe_player(t_game *game, double a)
+static void strafe_player(t_game *game, double a)
 {
-	char	**grid;
-	double	new_x;
-	double	new_y;
-	double	perp_x;
-	double	perp_y;
+	char **grid;
+	double new_x;
+	double new_y;
+	double perp_x;
+	double perp_y;
 
 	grid = game->map.grid;
 	perp_x = -game->player.dir_y;
@@ -70,7 +70,7 @@ static void	strafe_player(t_game *game, double a)
 			game->player.pos_y = new_y;
 }
 
-void	process_movement(t_game *game)
+void process_movement(t_game *game)
 {
 	if (game->keys[KEY_UP])
 		move_player(game, +1.00);
@@ -86,53 +86,23 @@ void	process_movement(t_game *game)
 		strafe_player(game, +1.00);
 }
 
-int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
-{
-    static int	ignore_next = 0;
-    int			delta_x;
-    int			center_x = SCREEN_WIDTH / 2;
-    int			center_y = SCREEN_HEIGHT / 2;
-
-    (void)mouse_y;
-    if (game->keys[KEY_ALT])
-    {
-        ignore_next = 0;
-        return (0);
-    }
-    if (ignore_next)
-    {
-        ignore_next = 0;
-        return (0);
-    }
-    if (abs(mouse_x - center_x) < 2)
-        return (0);
-    delta_x = mouse_x - center_x;
-    if (delta_x != 0)
-    {
-        rotate(game, delta_x * 0.01);
-        ignore_next = 1;
-        mlx_mouse_move(game->mlx, game->win, center_x, center_y);
-    }
-    return (0);
-}
-
 /*int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
 {
-    static int	center_x = SCREEN_WIDTH / 2;
-    static int	center_y = SCREEN_HEIGHT / 2;
-    int			delta_x;
+	static int	center_x = SCREEN_WIDTH / 2;
+	static int	center_y = SCREEN_HEIGHT / 2;
+	int			delta_x;
 
-    (void)mouse_y;
-    if (game->keys[KEY_ALT])
-        return (0);
-    delta_x = mouse_x - center_x;
-    if (abs(delta_x) > 1)
-    {
-        rotate(game, delta_x * 0.01);
-        if (abs(delta_x) > 50)
-            mlx_mouse_move(game->mlx, game->win, center_x, center_y);
-    }
-    return (0);
+	(void)mouse_y;
+	if (game->keys[KEY_ALT])
+		return (0);
+	delta_x = mouse_x - center_x;
+	if (abs(delta_x) > 1)
+	{
+		rotate(game, delta_x * 0.01);
+		if (abs(delta_x) > 50)
+			mlx_mouse_move(game->mlx, game->win, center_x, center_y);
+	}
+	return (0);
 }*/
 
 /*int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
