@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 13:01:23 by mpoirier          #+#    #+#             */
-/*   Updated: 2025/12/03 08:55:03 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/04 11:23:30 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,64 @@ void	process_movement(t_game *game)
 
 int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
 {
+    static int	ignore_next = 0;
+    int			delta_x;
+    int			center_x = SCREEN_WIDTH / 2;
+    int			center_y = SCREEN_HEIGHT / 2;
+
+    (void)mouse_y;
+    if (game->keys[KEY_ALT])
+    {
+        ignore_next = 0;
+        return (0);
+    }
+    if (ignore_next)
+    {
+        ignore_next = 0;
+        return (0);
+    }
+    if (abs(mouse_x - center_x) < 2)
+        return (0);
+    delta_x = mouse_x - center_x;
+    if (delta_x != 0)
+    {
+        rotate(game, delta_x * 0.01);
+        ignore_next = 1;
+        mlx_mouse_move(game->mlx, game->win, center_x, center_y);
+    }
+    return (0);
+}
+
+/*int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
+{
+    static int	center_x = SCREEN_WIDTH / 2;
+    static int	center_y = SCREEN_HEIGHT / 2;
+    int			delta_x;
+
+    (void)mouse_y;
+    if (game->keys[KEY_ALT])
+        return (0);
+    delta_x = mouse_x - center_x;
+    if (abs(delta_x) > 1)
+    {
+        rotate(game, delta_x * 0.01);
+        if (abs(delta_x) > 50)
+            mlx_mouse_move(game->mlx, game->win, center_x, center_y);
+    }
+    return (0);
+}*/
+
+/*int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
+{
 	static int	last_x = SCREEN_WIDTH / 2;
 	int			delta_x;
 
 	(void)mouse_y;
+	if (game->keys[KEY_ALT])
+	{
+		last_x = SCREEN_WIDTH / 2;
+		return (0);
+	}
 	delta_x = mouse_x - last_x;
 	if (delta_x != 0)
 	{
@@ -100,4 +154,4 @@ int	handle_mouse(int mouse_x, int mouse_y, t_game *game)
 		mlx_mouse_move(game->mlx, game->win, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	}
 	return (0);
-}
+}*/

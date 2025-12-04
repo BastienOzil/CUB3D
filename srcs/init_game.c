@@ -46,33 +46,31 @@ void	init_game(t_game *game)
 static void	set_vertical_direction(t_game *game)
 {
 	game->player.dir_x = 0;
+	game->player.plane_y = 0;
 	if (game->map.player_dir == 'N')
 	{
 		game->player.dir_y = -1;
 		game->player.plane_x = 0.66;
-		game->player.plane_y = 0;
 	}
 	else if (game->map.player_dir == 'S')
 	{
 		game->player.dir_y = 1;
 		game->player.plane_x = -0.66;
-		game->player.plane_y = 0;
 	}
 }
 
 static void	set_horizontal_direction(t_game *game)
 {
 	game->player.dir_y = 0;
-	game->player.plane_y = 0.66;
+	game->player.plane_x = 0;
 	if (game->map.player_dir == 'E')
 	{
 		game->player.dir_x = 1;
-		game->player.plane_x = 0;
+		game->player.plane_y = 0.66;
 	}
 	else if (game->map.player_dir == 'W')
 	{
 		game->player.dir_x = -1;
-		game->player.plane_x = 0;
 		game->player.plane_y = -0.66;
 	}
 }
