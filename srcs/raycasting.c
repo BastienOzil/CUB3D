@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-t_ray init_ray(int x, t_player player)
+static t_ray init_ray(int x, t_player player)
 {
     t_ray ray;
     
@@ -26,7 +26,7 @@ t_ray init_ray(int x, t_player player)
     return(side(ray, player));
 }
 
-void perform_dda(t_ray *ray, t_game *game)
+static void perform_dda(t_ray *ray, t_game *game)
 {
     int hit;
 
@@ -45,12 +45,14 @@ void perform_dda(t_ray *ray, t_game *game)
             ray->map_y += ray->step_y;
             ray->side = 1;
         }
-        if (is_wall(game->map.grid[ray->map_y][ray->map_x]))
+        if ((game->map.grid[ray->map_y][ray->map_x]) == '1')
             hit = 1;
+        /*if (is_wall(game->map.grid[ray->map_y][ray->map_x]))
+            hit = 1;*/
     }
 }
 
-t_wall init_wall(t_ray *ray, t_player player)
+static t_wall init_wall(t_ray *ray, t_player player)
 {
     t_wall wall;
     
@@ -64,10 +66,11 @@ t_wall init_wall(t_ray *ray, t_player player)
         wall.start = 0;
     wall.end = wall.height / 2 + SCREEN_HEIGHT / 2;
     if (wall.end >= SCREEN_HEIGHT)
-        wall.end = SCREEN_HEIGHT - 1;
+        wall.end = SCREEN_HEIGHT;
     return (wall);
 }
-void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
+
+static void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
 {
     int     y;
     int     tex_num;
@@ -90,13 +93,14 @@ void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
     if ((ray.side == 0 && ray.dir_x > 0) || (ray.side == 1 && ray.dir_y < 0))
         tex_x = TEX_WIDTH - tex_x - 1;
     y = wall.start -1 ;
-    while (++y < wall.end)
+    while (++y <= wall.end)
     {
         d = y * 256 - SCREEN_HEIGHT * 128 + wall.height * 128;
         tex_y = ((d * TEX_HEIGHT) / wall.height) / 256;
         color = get_tex_color(&game->texture.tex[tex_num], tex_x, tex_y);
         my_mlx_pixel_put(&game->img, x, y, color);
     }
+    y -= 1;
     while (y < SCREEN_HEIGHT)
         my_mlx_pixel_put(&game->img, x, y++, game->floor.hex);
 }

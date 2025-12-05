@@ -197,10 +197,6 @@ t_ray			side(t_ray ray, t_player player);
 void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int				get_tex_color(t_img *texture, int x, int y);
 int				get_texture_num(t_ray *ray);
-t_ray			init_ray(int x, t_player player);
-void			perform_dda(t_ray *ray, t_game *game);
-t_wall			init_wall(t_ray *ray, t_player player);
-void			draw_line(int x, t_ray ray, t_game *game, t_wall wall);
 void			raycasting(t_game *game);
 int				render_frame(t_game *game);
 
