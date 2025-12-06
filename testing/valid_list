@@ -1,0 +1,45 @@
+//data
+	//order
+		color before textures
+		colors + textures intermeled
+		color after texture
+	//space
+	lots of space before one entry
+	lots of space after one entry
+	lots of space between tokens
+	no empty line between data/map
+	lot of empty line between data/map
+	lot of empty line and full space line between data/map
+	lot of empty line at at start of file
+	lot of fullspace line at start of file
+	lot of empty line after map
+	lot of fullspace line after map
+	
+//map
+	basic rectangular map
+	basic rectangular map wall inside
+	basic rectangular map with unconected zone
+	map with outgrowth above
+	map with outgrowth under
+	map with outgrowth right
+	map with outgrowth left
+	cross shaped map (+ shape)
+	concave map top
+	concave map botom
+	concave map left
+	concave map right
+	concave on each side (X shape)
+	map with a hole inside (O shaped)
+	map with several hole (8 shape)
+	U shaped map
+	n shaped map
+	two part map, side by side
+	two part maps, one above the other, linked by a chain of 1
+	two parts maps, one above the other, with non_touching wall on each nl
+	maps with three blocks in quincunx
+	two part nested map (un shaped)
+	one hollow map with one filled map in the hole (dot in O shape)
+	lone wall (no floor) separated, left of main
+	lone wall (no floor) separated, right of main
+	valid map inside a square of wall
+	map with no floor but the player

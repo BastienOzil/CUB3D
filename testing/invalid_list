@@ -1,0 +1,92 @@
+//invalid map file
+	no_extention
+	extention.other
+	extention.pluscub
+	extention.cubplus
+	.cub
+	directory.cub
+
+//missing data/duplicate data
+	no north texture
+	no south texture
+	no east texture
+	no west texture
+	no floor color
+	no ceiling color
+	no map
+	several maps
+	two consecutive north texture
+	two consecutive floor color
+	two separate north texture
+	two separate floor color
+	data after map
+
+//wrong data
+
+	//nonssence lines
+		line starting with a lower_case letter
+		line starting with a digit
+		line starting with a special char (no #)
+		line with only one token (no map line)
+		line of type "pqurefpoqerj"
+
+	//data
+		invalid id entry
+		id is only token on line
+		id F followed by a texture path
+		id NO followed by a color
+		id F followd by random data
+		three tokens (first two valid) on texture entry
+		three tokens (first two valid) on color entry
+		//colors
+			rgb code > rgb max
+			rgb code with -1, 1, 1
+			rgb code with -1, -1, 1
+			rgb code with -1, -1, -1
+			rgb code with 0, >255, 0
+			rgb code with 0, >255, >255
+			rgb code with >255, >255, >255
+			rgb code with severals consecutives comas
+			rgb code with coma before code
+			rgb code with coma after code
+			hexa code > rgb max
+			#hexa code > rgb max
+			hexa code negatif
+			#hexa code negatif
+
+	//map
+		no player
+		multiplayer
+		forbiden char upcase
+		forbiden char digit
+		forbiden char lowcase
+		forbiden char special
+
+		//open map
+			top border zero
+			top border space
+			top border player
+			left border (zero, space, player)
+			right border (zero, space, player, empty)
+			botom border (zero, space, player)
+			open toward botom, in a midle line
+			open toward top, in a midle line
+			open toward left, in a middle column
+			open toward right, in a middle column
+			empty line in map
+			full space line in map
+			floor outside (top, botom, left, right)(inline, outline)
+			player outside (no direction/inline check, floor should be enough)
+			two block map open first block right
+			two block map open first block left
+			two block map open first block top
+			two block map open first block botom
+			two block map open second block left
+			two block map open second block right
+			U shaped map open toward the inside, from left
+			U shaped map open toward the inside, from right
+			U shaped map open toward the inside, from botom
+			O shaped map open toward the inside, from top
+			O shaped map open toward the inside, from right
+			O shaped map open toward the inside, from left
+			O shaped map open toward the inside, from botom
