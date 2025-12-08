@@ -79,6 +79,8 @@ int	fill_map_grid(char **lines, t_game *game, int start)
 	i = 0;
 	while (i < game->map.height)
 	{
+		if (is_empty_line(lines[start + i]))
+			return (0);
 		game->map.grid[i] = malloc(sizeof(char) * (game->map.width + 1));
 		if (!game->map.grid[i])
 			return (0);

@@ -58,6 +58,6 @@ int	parse_color_line(char *line, t_game *game)
 		return (1);
 	}
 	free_split(rgb_split);
-	store_color(game, type, rgb[0], rgb[1], rgb[2]);
+	store_color(game, type, rgb);
 	return (0);
 }

@@ -29,10 +29,16 @@ int	identify_texture_type(char *line, char **path_out)
 	if (type == -1)
 		return (-1);
 	i += 2;
+	if (!is_space(line[i]) && line[i] != '\0')
+		return (-1);
 	while (is_space(line[i]))
 		i++;
+	if (line[i] == '\0')
+		return (-1);
 	*path_out = &line[i];
 	clean_path(*path_out);
+	if (ft_strlen(*path_out) == 0)
+		return (-1);
 	return (type);
 }
 

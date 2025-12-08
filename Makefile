@@ -24,14 +24,18 @@ SRCS = $(SRC_DIR)/check_map.c \
        $(SRC_DIR)/movements.c \
        $(SRC_DIR)/movements_keys.c \
        $(SRC_DIR)/parse_color.c \
+       $(SRC_DIR)/parse_color_split.c \
+       $(SRC_DIR)/parse_color_store.c \
        $(SRC_DIR)/parse_color_utils.c \
        $(SRC_DIR)/parse_grid.c \
+       $(SRC_DIR)/parse_grid_check.c \
        $(SRC_DIR)/parse_grid_utils.c \
        $(SRC_DIR)/parse_map.c \
        $(SRC_DIR)/parse_texture.c \
        $(SRC_DIR)/parse_texture_utils.c \
        $(SRC_DIR)/raycasting.c \
        $(SRC_DIR)/raycasting_utils.c \
+       $(SRC_DIR)/split_lines.c \
        $(SRC_DIR)/start_game.c \
        $(SRC_DIR)/utils.c
 

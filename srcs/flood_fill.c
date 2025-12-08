@@ -36,6 +36,22 @@ static int	is_valid_position(t_game *game, int y, int x)
 	return (1);
 }
 
+static int	is_wall_or_outside(t_game *game, int y, int x)
+{
+	int	line_len;
+
+	if (y < 0 || y >= game->map.height)
+		return (0);
+	if (x < 0)
+		return (0);
+	line_len = ft_strlen(game->map.grid[y]);
+	if (x >= line_len)
+		return (0);
+	if (game->map.grid[y][x] == ' ')
+		return (0);
+	return (1);
+}
+
 static int	check_cell_surroundings(t_game *game, int y, int x)
 {
 	if (!is_valid_position(game, y - 1, x))
@@ -45,6 +61,14 @@ static int	check_cell_surroundings(t_game *game, int y, int x)
 	if (!is_valid_position(game, y, x - 1))
 		return (0);
 	if (!is_valid_position(game, y, x + 1))
+		return (0);
+	if (!is_wall_or_outside(game, y - 1, x))
+		return (0);
+	if (!is_wall_or_outside(game, y + 1, x))
+		return (0);
+	if (!is_wall_or_outside(game, y, x - 1))
+		return (0);
+	if (!is_wall_or_outside(game, y, x + 1))
 		return (0);
 	return (1);
 }

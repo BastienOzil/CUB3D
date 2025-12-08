@@ -48,6 +48,12 @@ static int	calculate_map_dimensions(char **lines, int start, t_game *game)
 	max_width = 0;
 	while (lines[start + height])
 	{
+		if (is_empty_line(lines[start + height]))
+		{
+			if (!check_no_map_after_empty(lines, start, height))
+				return (0);
+			break ;
+		}
 		line_len = ft_strlen(lines[start + height]);
 		if (line_len > max_width)
 			max_width = line_len;

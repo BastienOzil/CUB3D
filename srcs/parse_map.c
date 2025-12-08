@@ -116,7 +116,7 @@ int	parse_file(const char *file, t_game *game)
 	close(fd);
 	if (!content)
 		return (0);
-	lines = ft_split(content, '\n');
+	lines = split_lines(content);
 	free(content);
 	if (!lines)
 		return (0);
