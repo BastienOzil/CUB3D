@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/03 09:25:51 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/05 15:39:14 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 static t_ray init_ray(int x, t_player player)
 {
-    t_ray ray;
-    
-    ray.angle = 2 * x / (double)SCREEN_WIDTH - 1;
-    ray.dir_x = player.dir_x + player.plane_x * ray.angle;
-    ray.dir_y = player.dir_y + player.plane_y * ray.angle;
-    ray.map_x = (int)player.pos_x;
-    ray.map_y = (int)player.pos_y;
-    ray.delta_x = fabs(1/ ray.dir_x);
-    ray.delta_y = fabs(1/ ray.dir_y);
-    return(side(ray, player));
+	t_ray	ray;
+
+    ray.angle =  2 * x / (double)SCREEN_WIDTH - 1;
+	ray.dir_x = player.dir_x + player.plane_x * ray.angle;
+	ray.dir_y = player.dir_y + player.plane_y * ray.angle;
+	ray.map_x = (int)player.pos_x;
+	ray.map_y = (int)player.pos_y;
+	ray.delta_x = fabs(1 / ray.dir_x);
+	ray.delta_y = fabs(1 / ray.dir_y);
+    //ray.angle = atan2(ray.dir_y, ray.dir_x) - atan2(player.dir_y, player.dir_x);
+	return (side(ray, player));
 }
 
 static void perform_dda(t_ray *ray, t_game *game)
 {
-    int hit;
+	int	hit;
 
     hit = 0;
     while (!hit)
@@ -54,31 +55,36 @@ static void perform_dda(t_ray *ray, t_game *game)
 
 static t_wall init_wall(t_ray *ray, t_player player)
 {
-    t_wall wall;
+	t_wall	wall;
+    double perp_dist;
     
-    if (ray->side == 0)
-        wall.dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2) / ray->dir_x;
-    else
-        wall.dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2) / ray->dir_y;
-    wall.height = (int)(SCREEN_HEIGHT / wall.dist);
-    wall.start = -wall.height / 2 + SCREEN_HEIGHT / 2;
-    if (wall.start < 0)
-        wall.start = 0;
-    wall.end = wall.height / 2 + SCREEN_HEIGHT / 2;
-    if (wall.end >= SCREEN_HEIGHT)
-        wall.end = SCREEN_HEIGHT;
-    return (wall);
+	if (ray->side == 0)
+		perp_dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2)
+			/ ray->dir_x;
+	else
+		perp_dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2)
+			/ ray->dir_y;
+    wall.dist = perp_dist;
+    //wall.dist = perp_dist * cos(ray->angle);
+	wall.height = (int)(SCREEN_HEIGHT / wall.dist);
+	wall.start = -wall.height / 2 + SCREEN_HEIGHT / 2;
+	if (wall.start < 0)
+		wall.start = 0;
+	wall.end = wall.height / 2 + SCREEN_HEIGHT / 2;
+	if (wall.end >= SCREEN_HEIGHT)
+		wall.end = SCREEN_HEIGHT;
+	return (wall);
 }
 
 static void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
 {
-    int     y;
-    int     tex_num;
-    double  wallE;
-    int     tex_x;
-    int     d;
-    int     tex_y;
-    int     color;
+	int		y;
+	int		tex_num;
+	double	wallE;
+	int		tex_x;
+	int		d;
+	int		tex_y;
+	int		color;
 
     y = -1;
     while (++y < wall.start)
@@ -107,16 +113,16 @@ static void draw_line(int x, t_ray ray, t_game *game, t_wall wall)
 
 void	raycasting(t_game *game)
 {
-	t_ray   ray;
-    t_wall  wall;
-	int     x;
-
+	t_ray	ray;
+	t_wall	wall;
+	int		x;
+    
 	x = -1;
 	while (++x < SCREEN_WIDTH)
 	{
 		ray = init_ray(x, game->player);
-        perform_dda(&ray, game);
-        wall = init_wall(&ray, game->player);
-        draw_line(x, ray, game, wall);
+		perform_dda(&ray, game);
+		wall = init_wall(&ray, game->player);
+		draw_line(x, ray, game, wall);
 	}
 }

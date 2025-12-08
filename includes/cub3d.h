@@ -6,7 +6,7 @@
 /*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/04 10:58:04 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/08 11:05:19 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 # define SCREEN_HEIGHT 720
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
-# define MOVE_SPEED 0.05
-# define ROT_SPEED 0.3
-//# define FOV 60
+# define MOVE_SPEED 0.05 
+# define ROT_SPEED 1.0
+//# define FOV 60 //		FOV can only be between 30 and 180
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
