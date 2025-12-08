@@ -1,7 +1,7 @@
-NO ./sprites/basic.xpm
-SO ./sprites/basic.xpm
+NO ./texture/north_texture.xpm
+SO ./texture/south_texture.xpm
 WE wefpwepofkpweokfewpofew
-EA ./sprites/basic.xpm
+EA ./texture/east_texture.xpm
 
 C 26,161,199
 F 107,75,85

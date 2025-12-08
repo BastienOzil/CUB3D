@@ -1,10 +1,10 @@
-NO ./sprites/basic.xpm
-SO ./sprites/basic.xpm
-WE ./sprites/basic.xpm
-EA ./sprites/basic.xpm
+NO ./texture/north_texture.xpm
+SO ./texture/south_texture.xpm
+WE ./texture/west_texture.xpm
+EA ./texture/east_texture.xpm
 
 C 26,161,199
-F ./sprites/basic.xpm
+F ./texture/east_texture.xpm
 
 
 11111111111
