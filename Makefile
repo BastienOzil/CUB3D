@@ -14,30 +14,30 @@ MLX_DIR = minilibx-linux
 
 LIBFT_DIR = libft
 
-SRCS = $(SRC_DIR)/check_map.c \
-       $(SRC_DIR)/cleanup.c \
-       $(SRC_DIR)/error.c \
-       $(SRC_DIR)/flood_fill.c \
-       $(SRC_DIR)/init_game.c \
-       $(SRC_DIR)/load_textures.c \
-       $(SRC_DIR)/main.c \
-       $(SRC_DIR)/movements.c \
-       $(SRC_DIR)/movements_keys.c \
-       $(SRC_DIR)/parse_color.c \
-       $(SRC_DIR)/parse_color_split.c \
-       $(SRC_DIR)/parse_color_store.c \
-       $(SRC_DIR)/parse_color_utils.c \
-       $(SRC_DIR)/parse_grid.c \
-       $(SRC_DIR)/parse_grid_check.c \
-       $(SRC_DIR)/parse_grid_utils.c \
-       $(SRC_DIR)/parse_map.c \
-       $(SRC_DIR)/parse_texture.c \
-       $(SRC_DIR)/parse_texture_utils.c \
-       $(SRC_DIR)/raycasting.c \
-       $(SRC_DIR)/raycasting_utils.c \
-       $(SRC_DIR)/split_lines.c \
-       $(SRC_DIR)/start_game.c \
-       $(SRC_DIR)/utils.c
+SRCS = $(SRC_DIR)/game/init_game.c \
+       $(SRC_DIR)/game/load_textures.c \
+       $(SRC_DIR)/game/main.c \
+       $(SRC_DIR)/game/start_game.c \
+       $(SRC_DIR)/keyboard/movements.c \
+       $(SRC_DIR)/keyboard/movements_keys.c \
+       $(SRC_DIR)/parse_map/check_map.c \
+       $(SRC_DIR)/parse_map/flood_fill.c \
+       $(SRC_DIR)/parse_map/parse_grid.c \
+       $(SRC_DIR)/parse_map/parse_grid_check.c \
+       $(SRC_DIR)/parse_map/parse_grid_utils.c \
+       $(SRC_DIR)/parse_map/parse_map.c \
+       $(SRC_DIR)/parse_map/split_lines.c \
+       $(SRC_DIR)/parse_rgb/parse_color.c \
+       $(SRC_DIR)/parse_rgb/parse_color_split.c \
+       $(SRC_DIR)/parse_rgb/parse_color_store.c \
+       $(SRC_DIR)/parse_rgb/parse_color_utils.c \
+       $(SRC_DIR)/parse_rgb/parse_texture.c \
+       $(SRC_DIR)/parse_rgb/parse_texture_utils.c \
+       $(SRC_DIR)/raycasting/raycasting.c \
+       $(SRC_DIR)/raycasting/raycasting_utils.c \
+       $(SRC_DIR)/utils/cleanup.c \
+       $(SRC_DIR)/utils/error.c \
+       $(SRC_DIR)/utils/utils.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -62,6 +62,12 @@ $(MLX):
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/game
+	@mkdir -p $(OBJ_DIR)/keyboard
+	@mkdir -p $(OBJ_DIR)/parse_map
+	@mkdir -p $(OBJ_DIR)/parse_rgb
+	@mkdir -p $(OBJ_DIR)/raycasting
+	@mkdir -p $(OBJ_DIR)/utils
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
