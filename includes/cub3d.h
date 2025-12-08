@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 11:05:19 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/08 11:35:30 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define SCREEN_HEIGHT 720
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
-# define MOVE_SPEED 0.05 
-# define ROT_SPEED 1.0
+# define MOVE_SPEED 0.02
+# define ROT_SPEED 0.7
 //# define FOV 60 //		FOV can only be between 30 and 180
 
 # ifndef M_PI
@@ -147,13 +147,23 @@ int				parse_color_line(char *line, t_game *game);
 int				get_color_type(char *line, int *i);
 int				validate_rgb_range(int r, int g, int b);
 int				check_color_duplicate(t_game *game, int type);
-void			store_color(t_game *game, int type, int r, int g, int b);
+
+// parse_color_split
 char			**split_rgb_values(char *rgb_str);
+
+// parse_color_store
+void			store_color(t_game *game, int type, int rgb[3]);
 
 // utils
 int				is_space(char c);
 void			free_split(char **split);
 char			*ft_strtrim_whitespace(char *str);
+
+// split_lines
+char			**split_lines(char *content);
+
+//parse_grid_check
+int				check_no_map_after_empty(char **lines, int start, int height);
 
 // parse_grid
 int				parse_map_grid(char **lines, t_game *game, int start_index);
@@ -192,6 +202,7 @@ void			process_movement(t_game *game);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_keyrelease(int keycode, t_game *game);
 int				handle_mouse(int mouse_x, int mouse_y, t_game *game);
+
 // raycasting
 t_ray			side(t_ray ray, t_player player);
 void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
