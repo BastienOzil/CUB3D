@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:49:08 by bozil             #+#    #+#             */
-/*   Updated: 2025/11/28 09:23:36 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/09 14:22:44 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Point d'entrée: vérifie les arguments, parse le .cub, valide la map, 
+ * Point d'entrée: vérifie les arguments, parse le .cub, valide la map,
  * initialise le joueur et lance le jeu MLX.
  */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	main(int ac, char **av)
 {
-	t_game game;
+	t_game	game;
 
 	if (ac != 2)
 		return (ft_error("Usage: ./cub3D <map.cub>"));

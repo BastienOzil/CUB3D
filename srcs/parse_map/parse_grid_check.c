@@ -3,16 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parse_grid_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 11:03:51 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 14:16:39 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/09 14:11:52 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
- * Vérifier s'il y a du contenu de map après une ligne vide.
- */
 
 #include "../includes/cub3d.h"
 

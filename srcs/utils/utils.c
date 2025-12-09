@@ -2,26 +2,22 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/11/19 20:40:55 by bozil             #+#    #+#             */
 /*   Updated: 2025/11/25 15:16:06 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- * Ce fichier contient des fonctions helper utilisées partout:
- * - is_space(): Vérifie si un caractère est un espace blanc (' ', '\t', '\n')
- * - free_split(): Libère un tableau de chaînes (résultat de ft_split)
- * - ft_strtrim_whitespace(): Enlève les espaces au début et à la fin
- */
-
 #include "../includes/cub3d.h"
 
-int is_wall(char c)
+int	is_wall(char c)
 {
-    return (c == '1' || c == ' ');
+	return (c == '1' || c == ' ');
 }
 
 int	is_space(char c)

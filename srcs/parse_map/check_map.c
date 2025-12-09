@@ -10,11 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- * Valide la configuration: vérifie textures/couleurs présentes, grille valide,
- * trouve un unique joueur, valide les caractères et les murs.
- */
-
 #include "../includes/cub3d.h"
 
 static int	is_player(char c)

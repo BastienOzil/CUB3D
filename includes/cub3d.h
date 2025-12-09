@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:55:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 11:35:30 by bozil            ###   ########.fr       */
+/*   Updated: 2025/12/09 14:52:44 by mpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,13 @@ typedef struct s_wall
 	int			end;
 }				t_wall;
 
+typedef struct s_tex
+{
+	int			num;
+	int			x;
+	int			y;
+}				t_tex;
+
 // parse_map
 int				parse_file(const char *file, t_game *game);
 
@@ -162,7 +169,7 @@ char			*ft_strtrim_whitespace(char *str);
 // split_lines
 char			**split_lines(char *content);
 
-//parse_grid_check
+// parse_grid_check
 int				check_no_map_after_empty(char **lines, int start, int height);
 
 // parse_grid
@@ -210,5 +217,6 @@ int				get_tex_color(t_img *texture, int x, int y);
 int				get_texture_num(t_ray *ray);
 void			raycasting(t_game *game);
 int				render_frame(t_game *game);
+void			perform_dda(t_ray *ray, t_game *game);
 
 #endif

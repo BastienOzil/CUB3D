@@ -10,11 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- * Vérifie que la map est fermée: tous les espaces accessibles (0 et joueur) 
- * ne doivent jamais toucher le vide (hors limites de la grille).
- */
-
 #include "../includes/cub3d.h"
 
 static int	is_player(char c)
