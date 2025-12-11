@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 10:56:46 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/09 14:57:13 by mpoirier         ###   ########.fr       */
+/*   Updated: 2025/12/11 10:38:15 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_wall	init_wall(t_ray *ray, t_player player)
 	return (wall);
 }
 
-static void	draw_wall(int y, t_game *game, t_wall wall, t_tex tex)
+static void	draw_wall(int x, int y, t_game *game, t_wall wall, t_tex tex)
 {
 	int	d;
 	int	color;
@@ -79,7 +79,7 @@ static void	draw_line(int x, t_ray ray, t_game *game, t_wall wall)
 		tex.x = TEX_WIDTH - tex.x - 1;
 	y = wall.start - 1;
 	while (++y <= wall.end)
-		draw_wall(y, game, wall, tex);
+		draw_wall(x, y, game, wall, tex);
 	y -= 1;
 	while (y < SCREEN_HEIGHT)
 		my_mlx_pixel_put(&game->img, x, y++, game->floor.hex);
