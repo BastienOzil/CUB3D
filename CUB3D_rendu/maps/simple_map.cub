@@ -1,0 +1,13 @@
+NO ./texture/north_texture.xpm
+SO ./texture/south_texture.xpm
+WE ./texture/west_texture.xpm
+EA ./texture/east_texture.xpm
+
+F 0,170,0
+C 50,100,255
+
+111111
+100101
+101001
+1100N1
+111111
