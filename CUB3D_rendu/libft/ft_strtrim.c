@@ -23,20 +23,18 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	i = 0;
 	end = ft_strlen(s1);
-	while (ft_strchr(set, s1[i]) && s1[i])
+	if (!end)
+		return (NULL);
+	while (s1[i] && ft_strchr(set, s1[i]))
 		i++;
-	while (ft_strchr(set, s1[end - 1]) && end > i)
+	while (s1[end - 1] && ft_strchr(set, s1[end - 1]) && end > i)
 		end--;
 	new_str = malloc(sizeof(char) * (end - i + 1));
 	if (!new_str)
 		return (NULL);
 	j = 0;
 	while (i < end)
-	{
-		new_str[j] = s1[i];
-		i++;
-		j++;
-	}
+		new_str[j++] = s1[i++];
 	new_str[j] = '\0';
 	return (new_str);
 }
