@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Parse la grille de la map: localise le début, calcule les dimensions, 
- * alloue la mémoire et remplit en gérant les maps rectangulaires.
+ * Parses the map grid: locates the start, calculates dimensions,
+ * allocates memory and fills handling rectangular maps.
  */
 
 #include "../includes/cub3d.h"

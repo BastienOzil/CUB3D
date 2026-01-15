@@ -6,13 +6,13 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:22:35 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/03 09:10:39 by bozil            ###   ########.fr       */
+/*   Updated: 2026/01/15 10:22:50 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Charge les 4 textures XPM en mémoire avec mlx_xpm_file_to_image() 
- * et récupère leurs adresses pour le rendu.
+ * Loads the 4 XPM textures into memory with mlx_xpm_file_to_image()
+ * and retrieves their addresses for rendering.
  */
 
 #include "../includes/cub3d.h"

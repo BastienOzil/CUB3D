@@ -6,12 +6,12 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 11:03:27 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 14:16:32 by bozil            ###   ########.fr       */
+/*   Updated: 2026/01/15 10:23:01 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Validation et split des valeurs RGB.
+ * Validation and splitting of RGB values.
  */
 
 #include "../includes/cub3d.h"

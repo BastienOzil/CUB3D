@@ -6,13 +6,13 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 11:04:16 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 14:16:42 by bozil            ###   ########.fr       */
+/*   Updated: 2026/01/15 10:23:04 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Split qui conserve les lignes vides (contrairement à ft_split).
- * Nécessaire pour détecter les lignes vides dans la map.
+ * Split that preserves empty lines (unlike ft_split).
+ * Necessary to detect empty lines in the map.
  */
 
 #include "../includes/cub3d.h"

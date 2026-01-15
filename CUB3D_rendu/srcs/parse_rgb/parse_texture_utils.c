@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Fonctions utilitaires: identifier le type de texture, nettoyer le chemin,
- * vérifier les doublons et stocker dans la structure game.
+ * Utility functions: identify texture type, clean path,
+ * check for duplicates and store in the game structure.
  */
 
 #include "../includes/cub3d.h"

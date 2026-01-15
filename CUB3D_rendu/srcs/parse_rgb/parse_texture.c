@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Parse les lignes de textures (NO/SO/WE/EA): identifie le type, extrait 
- * le chemin .xpm, vérifie l'existence et détecte les doublons.
+ * Parses texture lines (NO/SO/WE/EA): identifies type, extracts
+ * .xpm path, checks existence and detects duplicates.
  */
 
 #include "../includes/cub3d.h"

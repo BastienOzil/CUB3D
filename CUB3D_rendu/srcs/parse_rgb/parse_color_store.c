@@ -6,12 +6,12 @@
 /*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 11:03:34 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/08 14:16:35 by bozil            ###   ########.fr       */
+/*   Updated: 2026/01/15 10:23:00 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Stockage des couleurs dans la structure game.
+ * Stores colors in the game structure.
  */
 
 #include "../includes/cub3d.h"

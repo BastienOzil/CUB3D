@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Lit et parse le fichier .cub: vérifie l'extension, lit le contenu, 
- * identifie les textures/couleurs et la grille de la map.
+ * Reads and parses the .cub file: checks extension, reads content,
+ * identifies textures/colors and the map grid.
  */
 
 #include "../includes/cub3d.h"

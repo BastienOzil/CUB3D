@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Initialise la structure game et calcule la position/direction du joueur 
- * avec vecteur de direction et plan de caméra selon l'orientation.
+ * Initializes the game structure and calculates the player's position/direction
+ * with direction vector and camera plane according to the orientation.
  */
 
 #include "../includes/cub3d.h"

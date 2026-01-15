@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpoirier <mpoirier@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: bozil <bozil@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 10:49:08 by bozil             #+#    #+#             */
-/*   Updated: 2025/12/09 14:22:44 by mpoirier         ###   ########.fr       */
+/*   Updated: 2026/01/15 10:22:49 by bozil            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * Point d'entrée: vérifie les arguments, parse le .cub, valide la map,
- * initialise le joueur et lance le jeu MLX.
+ * Entry point: checks arguments, parses the .cub file, validates the map,
+ * initializes the player and launches the MLX game.
  */
 
 #include "../../includes/cub3d.h"

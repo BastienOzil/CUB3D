@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Fonctions utilitaires: identifier le type, valider le range RGB, 
- * vérifier doublons.
+ * Utility functions: identify type, validate RGB range,
+ * check for duplicates.
  */
 
 #include "../includes/cub3d.h"

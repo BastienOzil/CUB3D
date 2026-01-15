@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Libère toute la mémoire: chemins des textures, grille 2D de la map 
- * et autres allocations dynamiques.
+ * Frees all memory: texture paths, 2D map grid
+ * and other dynamic allocations.
  */
 
 #include "../includes/cub3d.h"

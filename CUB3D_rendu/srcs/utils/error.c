@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 /*
- * Affiche un message d'erreur sur stderr et retourne 1 (code d'erreur).
+ * Displays an error message on stderr and returns 1 (error code).
  */
 
 #include "../includes/cub3d.h"

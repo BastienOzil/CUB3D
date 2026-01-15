@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 /*
- * Parse les couleurs F/C: extrait les valeurs RGB, valide (0-255), 
- * convertit en hexa et stocke dans game.
+ * Parses F/C colors: extracts RGB values, validates (0-255),
+ * converts to hex and stores in game.
  */
 
 #include "../includes/cub3d.h"
